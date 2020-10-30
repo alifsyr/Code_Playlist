@@ -1,0 +1,92 @@
+Nama : Zachrandika Alif Syahreza
+NIM  : 18219036
+
+Kamus umum
+constant MaxEl : integer = ... {banyaknya elemen maksimum}
+type infotype  : integer {elemen set}
+type address   : integer {indeks label}
+type set       : 
+    ⟨ T: array [0..MaxEl-1] of infotype, {tabel penyimpan elemen set}
+      NbElmt: integer                    {jumlah elemen set}
+    ⟩
+
+{ deklarasi : S : set
+  definisi akses (diimplementasikan sebagai selektor) :
+  NbMember(S) adalah S.NbElmt }
+
+soal 1
+procedure Insert(ElmtS: infotype, S:set) -> S
+{ Menambahkankan ElmtS ke S, jika ElmtS belum terdapat di dalam S }
+
+Kamus lokal
+IndKe, i : address
+IdxFound : boolean
+
+Algoritma
+    if not(IsMember(ElmtS,S)) then
+        IdxKe <- 0
+        IdxFound <- false
+        i <- 0
+        while (i < NbMember(S) && not(IdxFound)) do
+            if (ElmtS > S.T[i] && ElmtS < S.T[i+1]) then
+                IdxFound <- true
+                IdxKe <- i
+            i <- i + 1
+        if (IdxFound) then
+            i traversal [NbMember(S)..IdxKe+1]
+            S.T[i] <- S.T[i-1]
+        S.T[IdxKe] <- ElmtS
+        NbMember(S) <- NbMember(S) + 1
+
+procedure Delete(ElmtS: infotype, S: Set) -> S
+{ Menghapus ElmtS dari S }
+
+Kamus lokal
+IdxKe, i : address
+IdxFound : boolean
+
+Algoritma
+    if (IsMember(ElmtS,S)) then
+        IdxFound <- false
+        i <- 0
+        while (i < NbMember(S) && not(IdxFound)) do
+            if (ElmtS = S.T[i]) then
+                IdxKe <- i
+                IdxFound <- true
+            i <- i + 1
+        if (IdxFound) then
+            i traversal [IdxKe..NbMember(S)-1]
+                S.T[i] <- S.T[i+1]
+            NbMember(S) <- NbMember(S) - 1   
+
+function IsMember(ElmtS: infotype, S: set) -> boolean
+{ mengembalikan nilai True jika ElmtS adalah member dari S }
+
+Kamus lokal
+i : address
+IdxFound : boolean
+
+Algoritma
+    i <- 0
+    IdxFound <- false
+    while (i < NbElmt(S) && not(IdxFound)) do
+        if (ElmtS = S.T[i]) then
+            IdxFound <- true
+    -> IdxFound   
+
+procedure Union(input S1: Set, input S2: Set, output S: Set) -> S
+{ Menghasilkan gabungan antara S1 dengan S2 }
+
+Kamus lokal
+i, j: address
+
+Algoritma
+    i <- 0
+    NbMember(S) <- 0
+    while (i < NbMember(S1)) do
+        Insert(S1[i], S)
+        i <- i + 1
+    j <- 0
+    while (j < NbMember(S2)) do
+        Insert(S2[i], S)
+        j <- j + 1

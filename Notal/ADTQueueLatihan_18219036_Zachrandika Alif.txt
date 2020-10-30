@@ -1,0 +1,75 @@
+Soal 1 - Circular Buffer
+constant Nil : integer = -1
+constant MaxEl : integer = 100
+
+type infotype : ( id:integer, lama: integer )
+type address: integer
+
+type Queue: ( 	A: array [0..MaxEl-1] of infotype,
+		HEAD: address,
+		Tail: address
+	    )
+
+function IsFull(Q: Queue) -> boolean
+	if Q.COUNT = MaxEl then
+		-> True
+	else
+		-> False
+
+procedure Enqueue(input/output Q: Queue, input X: infotype)
+	if (IsEmpty(Q)) then
+		Q.COUNT <- 1
+		Q.HEAD <- 1
+		Q.A[Q.HEAD] <- x
+	else
+		Q.COUNT <- Q.COUNT + 1
+		Q.A[(Q.HEAD + Q.COUNT-1) mod MaxEl] <- x 
+
+procedure Dequeue(input/output Q: Queue, output X: infotype)
+	if (Q.COUNT = 1) then
+		Q.HEAD <- Nil
+	else
+		Q.HEAD <- Q.HEAD + 1
+	Q.COUNT <- Q.COUNT - 1
+
+Soal 2 - Round Robin
+procedure ProcessRR(input/output Q: Queue, input T: integer)
+  if (Q.A[Q.Head].lama <= T) then
+        -> (Q.A[Q.HEAD].id,"telah selesai diproses")
+        Q.HEAD <- Q.HEAD + 1
+        Q.COUNT <- Q.COUNT - 1
+        if (Q.COUNT = 0) then
+		Q.HEAD <- Nil
+        
+    else
+        TEMP <- Q.A[Q.HEAD]
+        Q.HEAD <- Q.HEAD + 1
+        Q.A[Q.HEAD + Q.COUNT-1] <- TEMP
+        Q.A[Q.HEAD + Q.COUNT-1].lama <- Q.A[Q.HEAD + Q.COUNT-1].lama - T
+
+Soal 3 - Priority Queue
+procedure Enqueue(input/output Q: Queue, output X: infotype)
+	if (IsEmpty(Q)) then
+		Q.TAIL <- 1
+		Q.HEAD <- 1
+		Q.A[Q.HEAD] <- X
+    
+	else 
+		if (Q.TAIL = MaxEl - 1) then
+			Q.HEAD <- Q.HEAD - 1
+			i traversal [Q.HEAD..Q.TAIL - 1]
+				Q.T[i] <- Q.T[i + 1]
+			Q.TAIL <- Q.TAIL - 1 
+        	i <- Q.TAIL + 1
+		while ( Q.A[i].lama > X.lama) do
+            		Q.A[i] <- Q.A[i - 1]
+            		i <- i - 1
+        	Q.A[i] <- X
+
+procedure Dequeue(input/output Q: Queue, output X: infotype)
+	X <- Q.A[Q.HEAD]
+    	if (Q.HEAD = Q.TAIL) then
+        	Q.HEAD <- Nil
+        	Q.TAIL <- Nil
+    	else
+        	Q.HEAD <- Q.HEAD + 1

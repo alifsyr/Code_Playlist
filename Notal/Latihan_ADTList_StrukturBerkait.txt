@@ -1,0 +1,84 @@
+Nama : Zachrandika Alif Syahreza
+NIM  : 18219036
+
+Soal 1.
+function CountPos (L: List) -> Integer
+
+Kamus:
+    type Node : < first : address, 
+				  next  : address,
+				  info  : ElType >
+	type List: address
+	type address: pointer to Node
+	ElType: integer
+
+Algoritma :
+	counter <- 0
+	P <- L
+	while (P != Nil) do
+		if (P↑.Info > 0) do
+			counter <- counter + 1
+		P <- P↑.Next
+	-> counter
+
+Soal 2.
+function Max(L: List) -> integer
+
+Kamus :
+    type Node : < first : address, 
+				  next  : address,
+				  info  : ElType >
+	type List: address
+	type address: pointer to Node
+	ElType: Integer
+
+Algoritma :
+    max <- L↑.Info
+	P <- L
+	while (P != Nil) do 
+		if (P↑.Info > max) then
+			max <- P↑.Info
+		P <- P↑.Next 
+	-> max
+
+Soal 3.
+function SearchPos(L: List) -> address
+
+Kamus :
+	type Node : < first : address, 
+				  next  : address,
+				  info  : ElType >
+	type List: address
+	type address: pointer to Node
+	ElType: integer
+
+Algoritma :
+	positif <- false
+	while (P != Nil) and not positif do
+		if (P↑.Info >0) then
+			positif <- true
+		else
+			P <- P↑.Next
+	-> P
+
+Soal 4.
+procedure DeleteNeg(input/output L:List)
+
+Kamus :
+	type Node : < first : address, 
+				  next  : address,
+				  info  : ElType >
+	type List: address
+	type address: pointer to Node
+	ElType: integer
+
+Algoritma :
+	P <- L
+	bin <- Nil
+	negatif <- false
+	while (P != Nil) and not negatif do
+		if (P↑.Info < 0) do
+			bin <- P↑.Info
+			P <- P↑.Next
+			P↑.Next <- Nil
+			Dealokasi (P)

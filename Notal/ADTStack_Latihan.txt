@@ -1,0 +1,71 @@
+Zachrandika Alif Syahreza
+18219036
+
+Soal 1a
+procedure CopyStack (input Sin: Stack,output Sout: Stack)
+{membuat salinan Sin}
+{I.S. Sin terdefinisi, Sout sembarang}
+{F.S. Sout berisi salinan Sin yang identik}
+
+kamus
+temp: array[0..MaXEl-1] of infotype
+Sin, Sout: Stack
+sum, j: Int
+
+Algoritma
+j <- 0
+while (!IsEmpty(Sin)) do
+    temp[j] <- X
+    pop (Sin,X)
+    j <- j + 1
+sum <- j
+
+i traversal [0..sum]
+    push (Sin, temp[sum-j])
+    push (Sout, temp[sum-j])
+
+Soal 1b
+procedure InverseStack (input/output S: Stack)
+{membalik isi suatu stack}
+{I.S. S terdefinisi}
+{F.S isi S terbalik dari posisi semula}
+
+kamus
+temp: array[0..MaXEl-1] of infotype
+S: Stack
+sum, j: Int
+
+Algoritma
+j <- 0
+while (!IsEmpty(S)) do
+    Pop(S, X)
+    temp[j] <- X
+    j <- j + 1
+sum <- j
+
+i traversal [0..sum]
+    Push(S, temp[i])
+
+Soal 1c
+function MergeStack(S1,S2: Stack) -> Stack
+{Menghasilkan sebuah stack yang merupakan hasil penggabungan S1 dengan S2 
+dengan S1 berada di posisi lebih “bawah”. Urutan kedua stack harus sama seperti aslinya.}
+
+{Stack baru diisi sampai seluruh elemen S1 dan S2 masuk ke dalam stack, atau jika stack baru sudah penuh, 
+maka elemen yang dimasukkan adalah secukupnya yang dapat ditampung.}
+
+kamus
+S1, S2, mergeStack: Stack
+
+Algoritma
+InverseStack(S1)
+    while (Top(S1) != Nil and TOP(mergeStack) <= MaxEl) do
+        TOP(mergeStack) <- TOP(mergeStack) + 1
+        infoTOP(mergeStack) <- infoTOP(S1)
+        TOP(S1) <- TOP(S1) - 1
+
+    InverseStack(S2)
+    while (Top(S2) != Nil and TOP(mergeStack) <= MaxEl) do
+        TOP(mergeStack) <- TOP(mergeStack) + 1
+        infoTOP(mergeStack) <- infoTOP(S2)
+        TOP(S2) <- TOP(S2) - 1
