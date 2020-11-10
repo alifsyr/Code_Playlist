@@ -73,4 +73,12 @@ While (Next(last) != First(L)) do
     else
         Next(preclast) <- First(L)
         X <- Info(last)
-        Dealokasi(last)     
+        Dealokasi(last)
+
+Procedure InsertAfter( input / output L: List, input P: address, input Prec: address)
+{ I.S. Prec pastilah node dari list; P sudah dialokasi
+  F.S. Insert P sebagai node sesudah node beralamat Prec }
+
+Algoritma
+Next(P) <- Next(Prec)
+Next(Prec) <- P
