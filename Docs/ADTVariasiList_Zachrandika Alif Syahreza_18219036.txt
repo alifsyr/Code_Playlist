@@ -1,0 +1,76 @@
+Varisai list linier : silkuler
+
+Function IsEmpty ( Input L: List) -> boolean
+{ Mengirim true jika list kosong }
+
+Algoritma
+P <- Alokasi(X)
+if (P != Nil) then
+    if (IsEmpty(L)) then
+        Next(P) <- P {P akan menunjuk ke dia sendiri sbg elemen pertama}
+    Else
+        last <- First(L)
+        While (Next(last) != First(L)) do
+            last <- Next(last)
+        Next(P) <- First(L)
+        Next(last) <- P
+    First(L) <- P
+
+Procedure InsertAfter( input / output L: List, input P: address, input Prec: address)
+{ I.S. Prec pastilah node dari list; P sudah dialokasi
+  F.S. Insert P sebagai node sesudah node beralamat Prec }
+
+Algoritma
+Next(P) <- Next(Prec)
+Next(Prec) <- P
+
+Function Alokasi( input X: ElType) -> address
+{ Mengirimkan address hasil alokasi sebuah elemen
+  Jika alokasi berhasil, maka address tidak nil, dan misalnya menghasilkan P, maka Info(P)=X, Next(P)=P
+  Jika alokasi gagal, mengirimkan Nil }
+
+Algoritma
+if (IsEmpty(L)) then
+    InsertFirst(L, X)
+else
+    P <- Alokasi(X)
+        if (P != Nil) then 
+            last <- First(L)
+            While (Next(last) != First(L)) do
+                last ← Next(last)
+            Next(last) <- P
+            Next(P) <- First(L)
+
+Procedure Dealokasi ( input P: address)
+{ I.S. P terdefinisi
+  F.S. P dikembalikan ke sistem Melakukan dealokasi/pengembalian address P }
+
+Algoritma
+P <- First(L)
+X <- Info(P)
+if (Next(First(L)) = First(L)) then
+    First(L) <- Nil
+else
+    last <- First(L)
+    While (Next(last) != First(L)) do
+        last <- Next(last)
+        First(L) <- Next(First(L))
+        Next(last) <- First(L)
+        Dealokasi(P)
+
+Procedure Dealokasi ( input P: address)
+{ I.S. P terdefinisi
+  F.S. P dikembalikan ke sistem Melakukan dealokasi/pengembalian address P }
+
+Algoritma
+last <- First(L)
+preclast <- Nil
+While (Next(last) != First(L)) do
+    preclast <- last
+    last <- Next(last)
+    if (preclast = Nil) then
+        First(L) <- Nil
+    else
+        Next(preclast) <- First(L)
+        X <- Info(last)
+        Dealokasi(last)     
