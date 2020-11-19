@@ -1,6 +1,7 @@
-# NIM/Nama : 16519080/Zachrandika Alif Syahreza
-# Tanggal : 8 april 2020
+# NIM/Nama : 18219036/Zachrandika Alif Syahreza
+# Tanggal : 12 November 2020
 # Deskripsi : program yang digunakan untuk membaca data umur 20 peserta pelatihan (integer > 0)
+#Setelah nilai lengkap, program akan menuliskan semua nilai umur (diawali dengan indeks, lihat contoh), umur tertinggi, dan umur terendah.
 
 
 P = [(int(input())) for i in range (20)]

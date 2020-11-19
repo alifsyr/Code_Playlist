@@ -12,17 +12,14 @@ berat = int(input())
 while (berat != -999):
     if (berat >= 30 and berat <= 200):
         count += 1
+        jumlah += berat
         if (berat >= 100):
             golongan_1 += 1
-            jumlah = jumlah + berat
-            berat = int(input())
+
         elif (berat <= 50):
             golongan_2 += 1
-            jumlah = jumlah + berat
-            berat = int(input())
-        
-        else:
-            berat = int(input())
+
+        berat = int(input())
 
     else:
         berat = int(input())
@@ -31,7 +28,7 @@ if (count == 0):
     print ("Data kosong")
 else:
     print(count)
-    print("Berat <= 50 = " + str(golongan_2))
-    print("Berat => 100 = " + str(golongan_1))
+    print(golongan_2)
+    print(golongan_1)
     avg = jumlah/count
-    print(int(round(avg)))
+    print((round(avg)))
