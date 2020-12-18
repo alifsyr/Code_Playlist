@@ -1,0 +1,142 @@
+{1. CountPos}
+
+function CountPos(L: List) -> integer
+Kamus
+    P: Address
+    count : integer
+Algoritma
+    count <- 0
+    P <- L
+    repeat {while P != Nil do }
+        if (P↑.Info > 0) then
+            count <- count + 1
+        P <- P↑.Next
+    until (P = Nil)
+    -> count
+
+{2. Max}
+
+function Max(L: List) -> integer
+Kamus
+    P : Address
+    max : integer
+Algoritma
+    P <- L
+    max <- P↑.Info
+    repeat {while P != Nil do }
+        if (P↑.Info > max) then
+            max <- P.Info
+        P <- P↑.Next
+    until (P = Nil)
+    -> max
+
+{3.SearchPos}
+
+function SearchPos(L: List) -> Address {search nilai positif}
+Kamus
+   P1 : Address
+   found : boolean
+Algoritma
+    P1 <- L
+    found <- False
+    if(P1↑.Info > 0) then
+        found <- True
+    while (not found and (P1 != Nil)){
+        P1 = P1↑.Next
+        if(P1↑.Info > 0) then{
+            found <- True
+        }
+    }
+    -> P1
+
+{4. DeleteNeg}
+
+prcedure DeleteNeg(input/output L : List) {Delete kalau ketemu negatif}
+Kamus
+    procedure DeleteP(input/output L: List, input P :Address)
+    P1 : Address
+    P2 : Address
+Algoritma {Kalau di pembahasannya ada pengecekan elemen pertama, terus 
+        traversal terus sampe akhir, delete pake delete after. Menurutku ini tetep bener si hhe
+        soalnya kata pa riza pake DeleteP bole juga.}
+    P1 <- L
+    repeat {while P != Nil do}
+        P2 <- P1
+        if (P1↑.Info < 0) then
+            DeleteP(L,P2)
+            P1 <- P1↑.Next
+            Dealokasi(P2)
+        else
+            P1 <- P1↑.Next
+    until (P1↑ = Nil)
+
+
+{5. CopyPos}
+procedure CopyPos(input L1: List, output L2: List)
+Kamus
+    procedure InsertLast(input/output L: List, input X: ElType)
+    procedure CreateEmpty(L: List)
+    L2 : List
+    P: Address
+Algoritma
+    CreateEmpty(L2)
+    P <- L1
+    repeat {while P != Nil do}
+        if (P↑.Info > 0) then
+            InsertLast(L2,P↑.Info)
+        P <- P↑.Next
+    until (P = Nil)
+
+
+{6. SortedIns}
+procedure SortedIns(input/output L: List, input X:ElType)
+Kamus
+    found : boolean
+    P : Address
+    Prec : Address
+    procedure InsertAfter(input P,input Prec: Address)
+    procedure InsertFirst (input/output L: List, input X: ElType)
+    procedure InsertLast(input/output L: List, input X: ElType)
+    PIns : Address
+Algoritma
+    P <- L
+    if IsEmpty(L)then
+        InsertFirst(L, X)
+    else
+        found <- False
+        Prec <- Nil
+        while (P != Nil) and (not found) do
+            if (P↑.Info < X) then
+                found <- True
+            Prec <- P
+            P <- P↑.Next
+        if P = Nil then
+            InsertLast(L,X)
+        else
+            PIns <- Alokasi(X)
+            InsertAfter(PIns,Prec)
+{Bisa juga alternatif yang tanpa boolean
+P != Nil pake boolean, kalau ngga bisa P↑.Next != Nil}
+
+{7. UpdateList}  {Yang bagian ini ngga di bahas kak}
+procedure UpdateList(input x,y : ElType, input/output L: List)
+Kamus
+    y1↑ : Node
+    found : boolean
+    P : Address
+    procedure InsertAfter(input P,input Prec: Address)
+    procedure DeleteP(input/output L: List, input P :Address)
+Algoritma
+    P <- L
+    found <- False
+    if P↑.Info = x then
+        found <- True
+    while (not found) and (P != Nil) do
+        P <- P↑.Next
+        if P↑.Info = x then
+            found <- True
+    if (found) then
+        y1↑.Info <- y
+        InsertAfter(y1↑,P)
+        DeleteP(L,P)
+    

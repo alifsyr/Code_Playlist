@@ -1,0 +1,151 @@
+# Nama	: Graciella Valeska Liander
+# NIM	: 18219075
+
+Latihan Soal ADT List dengan Struktur Berkait
+
+# Soal 1
+
+function CountPos(L: List) → integer
+{ Menghitung banyaknya kemunculan bilangan positif dari sebuah 
+  list of integer L }
+
+KAMUS LOKAL
+	P : address
+	pos : int
+
+ALGORITMA
+	P ← L
+	pos ← 0
+	while (P ≠ Nil) do
+		if (P↑.Info > 0) then
+			pos ← pos + 1
+		P ← P↑.Next
+	→ pos
+
+# Soal 2
+
+function Max(L: List) → integer
+{ Menghasilkan nilai maksimum dari suatu list of integer L yang 
+  tidak kosong }
+
+KAMUS LOKAL
+	P  : address
+	max: int
+
+ALGORITMA
+	P ← L
+	max ← P↑.Info
+	while (P ≠ Nil) do
+		if (P↑.Info > max) then
+			max ← P↑.Info 
+		P ← P↑.Next
+	→ max
+
+# Soal 3
+
+function SearchPos(L: List) → address
+{ Menghasilkan address di mana nilai positif pertama kali ditemukan di list
+  of integer L }
+
+KAMUS LOKAL
+	P     : address
+	found : boolean
+
+ALGORITMA
+	P ← L
+	found ← false
+	while (P ≠ Nil) and (not Found) do
+		if (P↑.Info > 0) then
+			found ← true 
+		P ← P↑.Next
+	if (found)
+		→ P
+	else
+		→ Nil
+
+
+# Soal 4
+
+procedure DeleteNeg (input/output L:List)
+{ I.S.: terdapat sebuah List }
+{ F.S.: List hanya terdiri dari bilangan positif }
+
+KAMUS LOKAL
+	P : address
+	procedure DeleteP(input/output L: List, input P: address)
+
+ALGORITMA
+	P ← L
+	while (P ≠ Nil) do
+		if (P↑.Info < 0) then
+			DeleteP (L, P)
+		P ← P↑.Next
+
+
+# Soal 5
+
+procedure CopyPos(input L1:List, output L2: List)
+{ I.S.: terdapat list L1 dan L2 }
+{ F.S.: Isi L2 sama dengan isi L1}
+
+KAMUS LOKAL
+	P : address
+	procedure InsertLast(input/output L:List, input X: ElType)
+
+ALGORITMA
+	P ← L1
+	while (P ≠ Nil) do
+		if (P↑.Info > 0) then
+			InsertLast (L2, P↑.Info)
+		P ← P↑.Next
+
+# Soal 6
+
+procedure SortedIns(input/output L:List, input X:ElType)
+{ I.S.: Terdapat sebuah list yang teurut menaik }
+{ F.S.: X menjadi anggota dari L yang terurut menaik }
+
+KAMUS LOKAL
+	P      : address
+	N      : address
+	bigger : boolean
+	function InsertAfter(input P, input Prec: address)
+	function InsertLast(input /output L:List, input X: ElType)
+
+ALGORITMA
+	P ← L
+	bigger ← false
+	A ← Alokasi(X)
+	while (P ≠ Nil) and (not bigger) do
+		N ← P↑.Next
+		if (N↑.Info > X) then
+			InsertAfter(A, P)
+			bigger ← true
+		P ← P↑.Next
+	if (not bigger) then
+		InsertLast(L, X)
+
+# Soal 7
+
+procedure UpdateList(input x,y: ElType, input/output L:List)
+{ I.S.: terdapat sebuah list }
+{ F.S.: jika x merupakan anggota L, maka ganti x dengan y
+	jika x bukan anggota L, maka L tetap }
+
+KAMUS LOKAL
+	P     : address
+	found : boolean
+	procedure DeleteP(input/output L: List, input P: address)
+	function InsertAfter(input P, input Prec: address)
+
+ALGORITMA
+	P ← L
+	found ← false
+	A ← Alokasi(y)
+	while (P ≠ Nil) and (not found) do
+		if (P↑.Info = x) then
+			DeleteP(P, x)
+			InsertAfter(A, P)
+			found ← true
+		P ← P↑.Next
+	

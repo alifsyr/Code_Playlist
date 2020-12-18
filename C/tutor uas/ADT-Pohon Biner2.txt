@@ -1,0 +1,39 @@
+function BSearch (P: BinTree, X: infotype) -> boolean
+KamusLokal
+    function IsUnerLeft(P: BInTree) -> boolean
+    function IsUnerRight(P: BinTree) -> boolean
+    function IsBiner(P: BinTree) -> boolean
+Algoritma
+    if IsTreeEmpty(P) then
+        -> False
+    else
+        depend on P:
+            X < Akar(P) : -> BSearch(Left(P))
+            X > Akar(P) : -> BSearch(Right(P))
+            X = Akar(P) : -> True
+
+function IsBTree (P:BinTree) -> boolean
+KamusLokal
+    function Tinggi(R: BinTree) -> integer
+    function NbElmt(P:BinTree) -> integer
+Algoritma
+    ->(((Tinggi(Left(P)) - Tinggi(Right(P)) < 1) and (Tinggi(Right(P)) - Tinggi(Left(P)) < 1)) and
+    ((NbElmt(Left(P)) - NbElmt(Right(P)) < 1) and (NbElmt(Right(P)) - NbElmt(Left(P)) < 1)) and
+    IsBTree(Left(P)) and IsBTree(Right(P)))
+
+function BuildBST (Infos: array [1..100] of integer,
+                    Neff: integer) -> BinTree
+KamusLokal
+    P: BinTree
+    type infotype: < Key: integer,
+                     Count: integer = 0>
+    X : infotype
+    Y : infotype
+    procedure InsSearchTree(input X: infotype, input/output P: BinTree)
+Algoritma
+    if Neff != 0 then
+        X.Key = Infos[Neff]
+        InsSearchTree(X,P)
+        BuildBST(Infos,Neff - 1)
+{Yang aku tangkep ini udh bener wkwk tpibisa juga ngga, kurang ngerti de, dibilangnya alternatif
+https://www.youtube.com/watch?v=aV-mRsUHiiI&ab_channel=RizaSatriaPerdana}

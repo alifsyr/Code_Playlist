@@ -1,0 +1,115 @@
+Nama	: Graciella Valeska Liander
+NIM	: 18219075
+
+Latihan Graph
+
+----------------------------------------------------------------------------------------
+function SearchNode (G: Graph, X: integer) → adrNode
+{ mengembalikan address simpul dengan Id=X jika sudah ada pada graph G,
+  Nil jika belum }
+
+KAMUS LOKAL
+
+ALGORITMA
+	P ← First(G)
+	address ← Nil
+	found ← false
+	while (P != Nil and !found) do
+		if (Id(P) = X) then
+			found ← true
+			address ← P
+		else
+			P ← Next(P)
+	→ address
+----------------------------------------------------------------------------------------
+function SearchEdge (G: Graph, prec: integer, succ: integer) → adrSuccNode
+{ mengembalikan address trailer yang menyimpan info busur (prec,succ)
+  jika sudah ada pada graph G, Nil jika belum }
+
+KAMUS LOKAL
+
+ALGORITMA
+	adrPrec ← SearchNode(G, prec)
+	adrSucc ← SearchNode(G, succ)
+	if (adrPrec != Nil and adrSucc != Nil) then
+		Edge ← Trail(adrPrec)
+		while (Edge != Nil and Succ(Edge) != adrSucc) then
+			Edge ← Next(Edge)
+		if (Succ(Edge) = adrSucc) then
+			→ Edge
+		else
+			→ Nil
+	→ Nil
+
+----------------------------------------------------------------------------------------
+procedure InsertNode (input/output G: Graph, input X: integer, output Pn: adrNode)
+{ Menambahkan simpul X ke dalam graph, jika alokasi X berhasil. }
+{ I.S. G terdefinisi, X terdefinisi dan belum ada pada G. }
+{ F.S. Jika alokasi berhasil, X menjadi elemen terakhir G, Pn berisi
+  address simpul X. Jika alokasi gagal, G tetap, Pn berisi Nil }
+
+KAMUS LOKAL
+
+ALGORITMA
+	Pn ← AlokNode(X)
+	if (Pn != Nil) then
+		P ← First(G)
+		while (Next(P) != Nil) do
+			P ← Next(P)
+		Next(P) ← Pn
+		Next(Pn) ← Nil
+
+----------------------------------------------------------------------------------------
+procedure InsertEdge (input/output G: Graph, input prec, succ: integer)
+{ Menambahkan busur dari prec menuju succ ke dalam G }
+{ I.S. G, prec, succ terdefinisi. }
+{ F.S. Jika belum ada busur (prec,succ) di G, maka tambahkan busur
+  (prec,succ) ke G. Jika simpul prec/succ belum ada pada G,
+  tambahkan simpul tersebut dahulu. Jika sudah ada busur (prec,succ)
+  di G, maka G tetap. }
+
+KAMUS LOKAL
+
+ALGORITMA
+	if (SearchNode(G, prec) = Nil) then
+		InsertNode(G, prec)
+	if (SearchNode(G, succ) = Nil) then
+		InsertNode(G, succ)
+	adrNode ← SearchNode(G, prec)
+	adrEdge ← SearchNode(G, succ)
+	if (SearchEdge(G, prec, succ) = Nil) then
+		Edge ← Trail(adrNode)
+		while (Next(Edge)!=Nil) then
+			Edge ← Next(Edge)
+		P ← AlokSuccNode(adrNode)
+		Next(Edge) ← P
+		NPred(adrNode) ← NPred(adrNode) + 1
+
+
+----------------------------------------------------------------------------------------
+procedure DeleteNode (input/output G: Graph, input X: integer)
+{ Menghapus simpul X dari G }
+{ I.S. G terdefinisi, X terdefinisi dan ada pada G, jumlah simpul
+  pada G lebih dari 1. }
+{ F.S. simpul X dan semua busur yang terhubung ke X dihapus
+  dari G. }
+
+KAMUS LOKAL
+
+ALGORITMA
+	adrNode ← SearchNode(G, X)
+	P ← First(G)
+	while (P != Nil) do
+		adrEdge ← Trail(P)
+		while (adrEdge != Nil) do
+			if (Next(adrEdge) != Nil) then
+				if (Succ(Next(adrEdge)) = adrNode)
+					Next(adrEdge) ← Next(Next(adrEdge))
+					DealokSuccNode(adrEdge)
+			adrEdge ← Next(adrEdge)
+		P ← Next(P)
+	DealokNode(adrNode)
+
+
+
+

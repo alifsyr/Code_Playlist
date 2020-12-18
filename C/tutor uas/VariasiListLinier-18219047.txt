@@ -1,0 +1,99 @@
+{Variasi List Linier, List dengan Pointer Ganda
+
+Nama: Pandu Puncak Prawira
+NIM: 18219047 }
+
+type ElType: integer
+type Address: pointer to Node
+type Node: < Info: ElType,
+            Next: Address
+            Prev: Address >
+
+type List: < First: Address
+            Last : Address >
+
+{Cara Mengakses:
+L↑.Info / L↑.Next /P↑.Info/P↑.Next: P/L = Address/List }
+
+{Soal-Soal Primitif:}
+
+{InsertFirst}
+
+procedure InsertFirst(input L: List, input X: ElType)
+KamusLokal
+    P: Address
+Algoritma
+    P <- Alokasi(X)
+    if (P != Nil) then
+        if (not IsEmpty(L)) then
+            L.First↑.Prev <- P
+        else
+            L.Last <- P
+        P↑.Next <- L.First
+        L.First <- P
+
+{InsertAfter}
+procedure InsertAfter(input L: List, input P: Address, input Prec: Address)
+KamusLokal
+Algoritma
+    if (Prec↑.Next != Nil) then
+        (Prec↑.Next)↑.Prev <- P
+    else
+        L.Last <- P
+    P↑.Next <- Prec↑.Next
+    P↑.Prev <- Prec
+    Prec↑.Next <- P
+
+{InsertLast}
+procedure InsertLast(input L: List, input X: ElType)
+KamusLokal
+    P: Address
+Algoritma
+    P <- Alokasi(X)
+    if (P != Nil) then
+        P↑.Prev <- L.Last
+        if(not IsEmpty(L)) then
+            L.Last↑.Next <- P
+        else
+            L.First <- P
+        L.Last <- P
+{Ini agak beda sama pembahasannya tapi menurutku masih benar..}
+{DeleteFirst}
+procedure DeleteFirst (input/output L: List, output X: ElType)
+KamusLokal
+    P : Address
+Algoritma 
+    P <- L.First
+    X <- P↑.Info
+    if (L.First = L.Last) then
+        L.Last <- Nil
+    else
+        (L.First↑.Next)↑.Prev <- Nil
+    L.First <- L.First↑.Next
+    Dealokasi(P) {Kyknya ngga butuh dealokasi..}
+
+{DeleteLast}
+procedure DeleteLast(input/output L: List, output X: ElType)
+KamusLokal
+    P: Address
+Algoritma
+    P <- L.Last
+    X <- P↑.Info
+    if (L.First = L. Last) then
+        L.First <- Nil
+    else
+        (L.Last↑.Prev)↑.Next <- Nil
+    L.Last = L.Last↑.Prev
+
+{DeleteAfter}
+procedure DeleteLast(input/output L : List, output Pdel: Address, input Prec: Address)
+KamusLokal
+Algoritma
+    Pdel = Prec↑.Next
+    if ((Prec↑.Next)↑.Next != Nil) then
+        ((Prec↑.Next)↑.Next)↑.Prev <- Prec
+    else
+        L.Last <- Prec
+    Prec↑.Next <- (Prec↑.Next)↑.Next
+    Pdel↑.Next <- Nil
+    Pdel↑.Prev <- Nil

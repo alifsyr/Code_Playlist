@@ -1,0 +1,97 @@
+Nama	: Graciella Valeska Liander
+NIM	: 18219075
+
+Latihan Soal Pohon Biner
+
+---------------------------------------------------------------------------------------
+function Search (P: BinTree, X: infotype) → boolean
+{ Mengirimkan true jika ada node dari P yang bernilai X }
+
+KAMUS LOKAL
+
+ALGORITMA
+	if (IsEmpty(P)) then
+		→ false
+	else 
+		if (Akar(P) = X) then
+			→ true
+		else
+			→ Search(Left(P)) or Search(Right(P))
+
+---------------------------------------------------------------------------------------
+function IsSkewLeft (P: BinTree) → boolean
+{ Mengirimkan true jika P adalah pohon condong kiri }
+
+KAMUS LOKAL
+
+ALGORITMA
+	if IsOneElmt(P) then
+		→ true
+	else
+		→ IsSkewLeft(Left(P)) and (IsEmpty(Right(P)))
+	
+---------------------------------------------------------------------------------------
+function IsSkewRight (P: BinTree) → boolean
+{ Mengirimkan true jika P adalah pohon condong kanan }
+
+KAMUS LOKAL
+
+ALGORITMA
+	if IsOneElmt(P) then
+		→ true
+	else
+		→ (IsEmpty(Left(P))) and IsSkewRight(Right(P))
+---------------------------------------------------------------------------------------
+function Level (P: BinTree, X: infotype) → integer
+{ Mengirimkan level dari node X yang merupakan salah satu daun dari pohon biner P.
+Akar(P) level-nya adalah 1. Pohon P tidak kosong dan elemen-elemennya unik. }
+
+KAMUS LOKAL
+
+ALGORITMA
+
+	if (IsOneElmt(P)) then
+		→ 1
+	else
+		if (Search(Left(P), X)) then
+			→ 1 + Level(Left(P), X)
+		else
+			→ 1 + Level(Right(P), X)
+
+---------------------------------------------------------------------------------------
+procedure AddDaun (input/output P: BinTree, input X, Y: infotype, input Kiri: boolean)
+{ I.S. P tidak kosong, X adalah daun Pohon Biner P }
+{ F.S. P bertambah simpulnya, dengan Y sebagai anak kiri X (jika Kiri), atau sebagai
+anak Kanan X (jika not Kiri). Jika ada lebih dari satu daun bernilai X, Y ditambahkan
+pada daun paling kiri. }
+
+KAMUS LOKAL
+
+ALGORITMA
+	if (IsOneElmt(P)) then
+		if (Kiri) then
+			Left(P) ← Alokasi(Y)
+		else 
+			Right(P) ← Alokasi(Y)
+	else 
+		if (Search(Left(P), X)) then
+			AddDaun(Left(P), X, Y, Kiri)
+		else 
+			AddDaun(Kanan(P), X, Y, Kiri)
+	
+
+---------------------------------------------------------------------------------------
+procedure DelDaun (input/output P: BinTree, input X: infotype)
+{ I.S. P tidak kosong, minimum 1 daun bernilai X }
+{ F.S. Semua daun yang bernilai X dihapus dari P }
+
+KAMUS LOKAL
+
+ALGORITMA
+	if (IsOneElmt(P) and (Akar(P) = X)) then
+		N ← P
+		P ← Nil
+		Dealokasi (N)
+	else
+		DelDaun(Left(P), X)
+		DelDaun(Right(P), X)

@@ -1,0 +1,162 @@
+function SearchNode (G:Graph, X: integer) -> adrNode
+KamusLokal
+    P : adrNode
+    found : adrNode
+    function IsEmpty(G : Graph) -> boolean
+Algoritma
+    found <- Nil
+    P <- First(G)
+    while (found = Nil and P != Nil) do
+        if (Id(P) = X) then
+            found <- P
+        P <- Next(P)
+    -> found
+                
+function SearchEdge (G: Graph, prec: integer, succ: integer) -> adrSuccNode
+KamusLokal
+    P: adrNode
+    S: adrSuccNode
+    found : boolean
+    function SearchNode (G:Graph, X: integer) -> adrNode
+Algoritma
+    P <- SearchNode(G,prec)
+    S <- Nil
+    if (P != Nil) then
+        found <- False
+        S <- Trail(P)
+        while (!found and S != Nil) do
+            if (Id(Suc(S)) = succ) then
+                found <- True
+            else
+                S <- Next(S)
+    -> S
+
+
+{ Ini panjang ngga dibutuhin ka mending yg diatas ini wkwk }
+    if !IsEmpty(G) then
+        if Next(P) != Nil then
+            found <- False
+            if Id(P) = prec then
+                S <- Trail(P)
+                if Succ(S) != succ then
+                    while S != Nil and !found do
+                        S <- Next(S)
+                        if Succ(S) = succ then
+                            found <- True
+                else
+                    found <- True
+
+        while P != Nil and !found do
+            P <- Next(P)
+            if Id(P) = prec then
+                S <- Trail(P)
+                if Succ(S) != succ then
+                    while S != Nil and !found do
+                        S <- Next(S)
+                        if Succ(S) = succ then
+                            found <- True
+                else
+                    found <- True
+        if found then
+            -> adrSuccNode
+        else
+            -> Nil
+
+    else
+        -> Nil
+            
+procedure InsertNode (input/output G: Graph, input X: integer, output Pn: adrNode)
+KamusLokal
+    Pn: adrNode
+    Prec : adrNode
+    function IsEmpty(G : Graph) -> boolean
+Algoritma
+    Pn <- AlokNode(X)
+    if Pn != Nil then
+        if IsEmpty(G) then
+            First(G) <- Pn
+        else 
+            Prec <- First(G)
+            while Next(Prec) != Nil do
+                Prec <- Next(Prec)
+            Next(Prec) <- Pn
+
+
+
+procedure InsertEdge (input/output G: Graph, input prec, succ : integer)
+KamusLokal
+    Pn1,Pn2 : adrNode
+    Pt,S : adrSuccNode
+    procedure InsertNode (input/output G: Graph, input X: integer, output Pn: adrNode)
+    function SearchEdge (G: Graph, prec: integer, succ: integer) -> adrSuccNode
+    function SearchNode (G:Graph, X: integer) -> adrNode
+Algoritma
+{Ini kayaknya bener...tapi masih agak bingung}
+    if SearchEdge(G,prec,succ) = Nil then
+        if SearchNode(G,prec) = Nil then
+            InsertNode(G,prec,Pn1)
+        else
+            Pn1 <- SearchNode(G,prec)
+        if SearchNode(G,succ) = Nil then
+            InsertNode(G,succ,Pn2)
+        else
+            Pn2 <- SearchNode(G,succ)
+        
+        Pt <- AlokSuccNode(Pn2) 
+        if NPred(Pn1) = 0 then
+            Trail(Pn1) <- Pt
+        else
+            S <- Trail(Pn1)
+            while Next(S) != Nil
+                S <- Next(S)
+            Next(S) <- Pt
+        
+{ Yang bawah ini ngga dijelasin}
+procedure DeleteNode (input/output G: Graph, input X: integer)
+KamusLokal
+    S,SPrec,SDel : adrSuccNode
+    P,Pn,Prec : adrNode
+    function SearchNode (G:Graph, X: integer) -> adrNode
+    procedure DealokSuccNode(input P: adrSuccNode)
+    procedure DealokNode(input P: adrNode)
+Algoritma
+    P <- SearchNode(G,X)
+    Pn <- First(G)
+    while Pn != Nil do
+        S <- Trail(Pn)
+        if Succ(S) = P then
+            Trail(Pn) <- Next(S)
+            Next(S) <- Nil
+            DealokSuccNode(S)
+            NPred(Pn) <- NPred(Pn) - 1
+        else
+            while S != Nil do
+                SPrec <- S
+                S <- Next(S)
+                if Succ(S) = P then
+                    S <- SDel
+                    Next(SPrec) <- Next(S)
+                    Next(SDel) <- Nil
+    
+            if Succ(SDel) = P then
+                DealokSuccNode(SDel)
+                NPred(Pn) <- NPred(Pn) - 1
+
+        
+        if Next(Pn) = P then
+            Prec <- Pn
+        Pn <- Next(Pn)
+    S <- Trail(P)
+    while S != Nil do
+        SPrec <- S
+        NPred(Succ(SPrec)) <- NPred(Succ(SPrec)) - 1
+        DealokSuccNode(SPrec)
+        S <- Next(S)
+
+    Next(Prec) <- Next(P)
+    Next(P) <- Nil
+    NPred(P) <- 0
+    DealokNode(P)
+
+
+https://www.youtube.com/watch?v=ctSVIFbwKXk&ab_channel=RizaSatriaPerdana

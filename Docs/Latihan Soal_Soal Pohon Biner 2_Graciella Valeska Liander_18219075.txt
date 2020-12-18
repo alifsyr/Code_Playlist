@@ -1,0 +1,53 @@
+Nama	: Graciella Valeska Liander
+NIM	: 18219075
+
+Latihan Soal Pohon Biner (2)
+
+------------------------------------------------------------------------------------
+function BSearch (P: BinTree, X: infotype) → boolean
+{ Mengirimkan true jika ada node dari P (BST) yang bernilai X }
+
+KAMUS LOKAL
+
+ALGORITMA
+	if (IsTreeEmpty(P)) then
+		→ false
+	if (Info(P) = X) then
+		→ true
+	else
+		if (Info(P) > X) then
+			→ BSearch(Left(P), X)
+		else
+			→ BSearch(Right(P), X)
+
+----------------------------------------------------------------------------------------------------------------
+function IsBTree (P: BinTree) → boolean
+{ Mengirimkan true jika P adalah balanced tree. Asumsi: P tidak kosong}
+
+KAMUS LOKAL
+
+ALGORITMA
+	if (IsTreeOneElmt(P))
+		→ true
+	else
+		→ ( (Tinggi(Left(P)) - Tinggi(Right(P)) <= 1) and (Tinggi(Left(P)) - Tinggi(Right(P)) => -1) and
+		    (NbElmt(Left(P)) - NbElmt(Right(P)) <= 1) and (NbElmt(Left(P)) - NbElmt(Right(P)) => -1) and
+	    	    (IsBTree(Left(P)) and IsBTree(Right(P)) )
+
+----------------------------------------------------------------------------------------------------------------
+function BuildBST (Infos:array [1..100] of integer, Neff:integer) → BinTree
+{ Mengirimkan BST yang semua elemennya ada di Infos (tidak terurut dan tidak unik). 
+  Infos selalu diisi dari 1. Neff adalah indeks terakhir Infos yang terdefinisi, 0 jika kosong.}
+
+KAMUS LOKAL
+
+ALGORITMA
+	P ← Nil
+	if (Neff != 0) then
+		MakeTree(Infos[1], Nil, Nil, P)
+		i ← 2
+		while (i <= Neff) do
+			InsSearchTree(Infos[i], P)
+			i ← i + 1
+		→ P
+	→ Nil 

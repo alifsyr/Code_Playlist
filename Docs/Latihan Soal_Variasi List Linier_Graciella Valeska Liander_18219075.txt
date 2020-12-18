@@ -1,0 +1,108 @@
+Nama	: Graciella Valeska Liander
+NIM	: 18219075
+
+Variasi List Sirkuler
+
+-----------------------------------------------------------------------------
+procedure InsertFirst(input/output L: List, input X: ElType)
+
+KAMUS LOKAL
+	P	: address
+	last	: address
+
+ALGORITMA
+	P ← Alokasi(X)
+	if (P != Nil) then
+		if (IsEmpty(L)) then
+			Next(P) ← P
+		else 
+			last ← First(L)
+			while (Next(last) != First(L)) do
+				last ← Next(last)
+			Next(P) ← First(L)
+			Next(last) ← P
+		First(L) ← P
+
+-----------------------------------------------------------------------------
+procedure InsertAfter (input/output L: List, input P: address, input Prec: address)
+
+KAMUS LOKAL
+
+ALGORITMA
+	if (Prec = Nil) then
+		First(L) ← P
+		Next(L) ← First(L)
+	else
+		Next(P) ← Next(Prec)
+		Next(Prec) ← P 
+		
+
+-----------------------------------------------------------------------------
+procedure InsertLast (input/output L: List, input X: ElType)
+
+KAMUS LOKAL
+	last	: address
+	P	: address
+
+ALGORITMA
+	if (IsEmpty(L)) then
+		InsertFirst(L, X)
+	else
+		P ← Alokasi(X)
+		if (P != Nil) then
+			last ← First(L)
+			while (Next(last) != First(L)) do
+				last ← Next(last)
+			Next(last) ← P
+			Next(P) ← First(L)
+		
+
+-----------------------------------------------------------------------------
+procedure DeleteFirst (input/output L: List, output X: ElType)
+
+KAMUS LOKAL
+	P	: address
+	last	: address
+
+ALGORITMA
+	P ← First(L)
+	X ← Info(P)
+	if (Next(First(L))) = First(L) then
+		First(L) ← Nil
+	else
+		last ← First(L)
+		while (Next(last) != First(L)) do
+			last ← Next(last)
+		First(L) ← Next(First(L))
+		Next(last) ← First(L)
+	Dealokasi(P)
+
+-----------------------------------------------------------------------------
+procedure DeleteLast (input/output L: List, output X: ElType)
+
+KAMUS LOKAL
+	last	: address
+	prec	: address
+
+ALGORITMA
+	if (not IsEmpty(L)) then
+		last ← First(L)
+		prec ← Nil
+		while (Next(last) != First(L)) do
+			prec ← last
+			last ← Next(last)
+		if (prec = Nil) then
+			First(L) ← Nil
+		else
+			Next(prec) ← First(L)
+		X ← Info(last)
+		Dealokasi(last)
+
+-----------------------------------------------------------------------------
+procedure DeleteAfter (input/output L: List, input Pdel: address, input Prec: address)
+
+KAMUS LOKAL
+
+ALGORITMA
+	Pdel ← Next(Prec)
+	Next(Prec) ← Next(Next(Prec))
