@@ -1,0 +1,201 @@
+# Nama	: Graciella Valeska Liander
+# NIM	: 18219075
+
+# ADT SET
+
+KAMUS UMUM
+	constant MaxEl 		: 100
+	type infoType		: integer
+	type address		: integer
+	type Set		: <T: array [0..MaxEl-1] of infoType
+				   NbElmt: integer> 
+
+# Insert, set disimpan berdasarkan nilai
+procedure Insert (input/output S: Set, input X: int)
+
+KAMUS LOKAL
+	i,j	: integer
+	insert 	: boolean
+
+ALGORITMA
+	if (S.NbElmt != MaxEl and not IsMember(S,X)) then
+		insert <- true
+		i <- 0
+		while (i < MaxEl and insert) do
+			if S[i] > X then
+				insert <- false
+			i <- i + 1
+		j <- S.NbElmt
+		while (j > i) do
+			S[j + 1] <- S[i]
+			j <- j - 1
+		S[i] <- X
+
+# Insert, set disimpan berdasarkan urutan insert
+procedure Insert (input/output S: Set, input X: int)
+
+KAMUS LOKAL
+
+ALGORITMA
+	if (S.NbElmt != MaxEl and not IsMember(S,X)) then
+		S[S.NbElmt - 1] <- X
+		
+
+# Delete, set disimpan berdasarkan nilai
+procedure Delete (input, output: Set, input: X)
+
+KAMUS LOKAL
+	i,j	: int
+	delete	: boolean
+
+ALGORITMA
+	if (IsMember(S,X)) then
+	i <- 0
+	delete <- true
+		while (S[i] <= X and delete) do
+			i <- i + 1
+			if (S[i] = X) then
+				delete <- false
+		if (not delete) then
+			j traversal [i..S.NbElmt]
+				S[i] <- S[i + 1]
+			S.NbElmt <- S.NbElmt - 1
+
+# Delete, set disimpan berdasarkan urutan insert
+procedure Delete (input, output: Set, input: X)
+
+KAMUS LOKAL
+	i,j	: int
+	delete	: boolean
+
+ALGORITMA
+	if (IsMember(S,X)) then
+		i <- 0
+		delete <- true
+		while (i < S.NbElmt and delete) do
+			i <- i + 1
+			if (S[i] = X) then
+				delete <- false
+		if (not delete) then
+			j traversal [i..S.NbElmt]
+				S[i] <- S[i + 1]
+			S.NbElmt <- S.NbElmt - 1
+
+# Binary Search
+function Search (input: Set, X: infoType) -> IdxType
+
+KAMUS LOKAL
+
+ALGORITMA
+	i <- 0
+	j <- S.NbElmt - 1
+	while (i < j) do
+		idx <- (i+j)/2
+		if (X > S.T[idx]) then
+			i <- idx + 1
+		else
+			j <- idx - 1
+
+	if (X = S.T[idx]) then
+		-> idx
+	else
+		-> -1
+
+# IsMember, set disimpan berdasasrkan nilai
+function IsMember (S: Set, X: int) -> boolean
+
+KAMUS LOKAL
+	i	: int
+	isMember: boolean
+
+ALGORITMA
+	-> Search (S, X) = -1
+
+# IsMember, set disimpan berdasasrkan urutan insert
+function IsMember (S: Set, X: int) -> boolean
+
+KAMUS LOKAL
+	i	: int
+	member	: boolean
+
+ALGORITMA
+	member <- true
+	while (i < NbElmt and member) do
+		i <- i + 1
+		if (S[i] = X) then
+			member <- false
+	-> member
+
+# ANALISIS ADT SET
+	Pada prosedur insert, ADT Set yang diurutkan berdasarkan urutan insert lebih efektif
+	karena tidak perlu melakukan proses pencarian. Sedangkan pada prosedur delete dan
+	IsMember, ADT Set yang diurutkan berdasarkan nilai dapat lebih efektif karena dapat
+	melakukan pencarian menggunakan binary search.
+
+# ADT MAP
+
+KAMUS UMUM
+	constant MaxEl 		: 100
+	type infoType		: integer
+	type address		: integer
+	type Set		: <T: array [0..MaxEl-1] of infoType
+				   NbElmt: integer> 
+
+procedure Insert (input, output: Set, input: X)
+
+KAMUS LOKAL
+	i : int
+
+ALGORITMA
+	if (not IsMember(S, X)) then
+		i <- hash(X)
+		while S.Tab[i] != Nil do
+			i <- (i+1) mod MaxEl
+		S.Tab[i] <- X
+		S.NbElmt <- S.NbElmt + 1
+
+procedure Delete (input, output: Set, input: X)
+
+KAMUS LOKAL
+	i : int
+
+ALGORITMA
+	if (IsMember(S, X)) then
+		i <- hash(X)
+		while S.Tab[i] != X do
+			i <- (i + 1) mod MaxEl
+		S.Tab[i] <- Nil
+		S.NbElmt <- S.NbElmt - 1
+
+function IsMember (S: Set, X: infoType) -> boolean
+
+KAMUS LOKAL
+	i 	: int
+	member 	: boolean
+ALGORITMA
+	i <- hash(X)
+	member <- false
+	while (S.Tab[i] != Nil and not member) do
+		if (S.Tab[i] = X) then
+			member <- true
+		i <- (i + 1) mod MaxEl
+	-> member
+
+procedure Union (input S1: Set, input S2: Set, output S: Set)
+
+KAMUS LOKAL
+	i, j : int
+
+ALGORITMA
+	S.NbElmt <- 0
+	i traversal [0..S1.NbElmt-1]
+		if (S1[i] != Nil) then
+			Insert(S, S1[i])
+	j traversal [0..S2.NbElmt-1]
+		if (S2[j] != Nil) then
+			Insert(S, S2[j])
+
+# ANALISIS ADT SET DENGAN HASH
+	ADT SET dengan HASH algoritma menjadi lebih singkat dan lebih mudah dilakukan untuk
+	setiap prosedur/fungsi karena tidak perlu melakukan pengecekan setiap elemen satu 
+	per satu

@@ -2,6 +2,13 @@
 # Tanggal : 3 December 2020
 # Deskripsi : program yang menerima input bilangan, misalnya N dan menerima N buah input bilangan yang disimpan di sebuah array. Lalu, implementasikan algoritma sorting
 
+def makeArray(N):
+    arr = []
+    for i in range (N):
+        x = int(input("Masukkan elemen ke-"+str(i+1)+": "))
+        arr = arr + [x]
+    return arr
+
 def get_max(arr, index_start):
 # mendapatkan maksimum array dari indeks indeks_start sampai selesai
     return max(arr[index_start:])
@@ -23,8 +30,8 @@ def sort(arr):
         maxArr = get_max(arr, i)
         maxIdx = get_idx(arr, maxArr)
         swap(arr, i, maxIdx)
-    print(arr)
+    print("Array =",arr)
 
-N = int(input())
-arr = [int(input()) for i in range(N)]
-sort(arr)
+N = int(input("Masukkan N: "))
+array = makeArray(N)
+sort(array)

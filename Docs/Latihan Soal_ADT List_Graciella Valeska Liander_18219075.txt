@@ -1,0 +1,142 @@
+   Latihan ADT List
+
+Nama	: Graciella Valeska Liander
+NIM	: 18219075
+
+# Soal 1
+function IsSimetrik (L: List) → boolean
+{ Menghasilkan true jika list simetrik
+  List disebut simetrik jika: 
+  elemen pertama = elemen terakhir, 
+  elemen kedua = elemen sebelum terakhir, dan seterusnya 
+  List kosong adalah list simetrik }
+
+KAMUS LOKAL
+	i,j 	: IdxType
+	L	: List
+
+ALGORITMA
+	if (IsEmpty(L)) then
+		-> true
+	else
+		i <- FirstIdx(L)
+		j <- LastIdx(L)
+		while ((i < j) and ((Get(L,i)) = (Get(L.j))) do
+			i <- i + 1
+			j <- j - 1
+		-> (Get(L,i)) = (Get(L.j))
+
+# Soal 2
+function PlusList (L1, L2: List) → List
+{ Prekondisi: L1 dan L2 berukuran sama dan tidak kosong
+  Mengirimkan L1+L2, yaitu penjumlahan setiap elemen L1
+  dan L2 pada indeks yang sama }
+
+KAMUS LOKAL
+	i : IdxType
+	L : List
+
+ALGORITMA
+	L <- MakeList()
+	i traversal [FirstIdx(L1)..LastIdx(L1)]
+		InsertLast(L,Get(L1,i)+Get(L2,i))
+	-> L
+
+# Soal 3
+function IsEQ(L1,L2: List) → boolean
+{ Mengirimkan true jika L1=L2, yaitu jika ukuran L1=L2
+  dan semua elemen L1 dan L2 pada indeks yang sama bernilai sama }
+
+KAMUS LOKAL
+	i : IdxType
+
+ALGORITMA
+	if (Length(L1) = Length(L2)) then
+		i <- FirstIdx(L1)
+		while ((i <= LastIdx(L1)) and (Get(L1,i) = Get(L2,i))) do
+			i <- i + 1
+		-> Get(L1,i) = Get(L2,i)
+	else
+		-> false
+
+# Soal 4
+function Search(L: List, X: ElType) → IdxType
+{ Search apakah ada elemen list L yang bernilai X.
+  Jika ada, menghasilkan indeks i terkecil, dengan elemen ke-i = X.
+  Jika tidak ada, mengirimkan InvalidIdx.
+  Menghasilkan indeks tak terdefinisi (InvalidIdx) jika list kosong.
+  Memakai skema searching tanpa Boolean. }
+
+KAMUS LOKAL
+	i : IdxType
+
+ALGORITMA
+	if IsEmpty(L) then
+		-> InvalidIdx
+	else	
+		i <- FirstIdx(L)
+		while (i < Length(L) and (Get(L,i) != X) do 
+			i <- i + 1
+		if (Get(L,i) = X) then
+			-> i
+		else
+			-> InvalidIdx
+
+# Soal 5
+function CountX(L: List, X: ElType) → integer
+{ Menghasilkan berapa banyak kemunculan elemen bernilai X di List L.
+  Jika list kosong, menghasilkan 0 }
+
+KAMUS LOKAL
+	i 	: IdxType
+	count	: integer
+
+ALGORITMA
+	if IsEmpty(L) then
+		-> 0
+	else 
+		count <- 0
+		i traversal [FirstIdx(L)..LastIdx(L)]
+			if (Get(L,i) = X) then
+				count <- count + 1
+		-> count
+
+# Soal 6
+procedure InsertUniq(input/output L: List, input X: ElType)
+{ Menambahkan X sebagai elemen terakhir list, pada list dengan elemen unik }
+{ I.S. List L boleh kosong, tetapi tidak penuh }
+{ dan semua elemennya bernilai unik, tidak terurut }
+{ F.S. Menambahkan X sebagai elemen terakhir L, }
+{ jika belum ada elemen yang bernilai X. }
+{ Jika sudah ada elemen list yang bernilai X }
+{ maka I.S. = F.S. }
+
+KAMUS LOKAL
+	i 	: IdxType
+	notFound: boolean
+
+ALGORITMA
+
+------------------------CARA I---------------------------------------------
+	if ( Length(L) < MaxEl ) then
+		i <- FirstIdx(L)
+		notFound <- true
+		while ( i <= LastIdx(L) and notFound ) do
+			if (L.A[i] = X) then
+				notFound <- false
+			else			
+				i <- i + 1
+		if (notFound) then
+			L.A[LastIdx(L) + 1] <- X
+------------------------CARA II--------------------------------------------
+	if ( Length(L) < MaxEl ) then
+		if (Search(L, X) = InvalidIdx) then
+			L.A[Length(L)] <- X
+
+		
+		
+
+
+
+
+

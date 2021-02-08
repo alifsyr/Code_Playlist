@@ -1,0 +1,232 @@
+Nadya Laurentia
+18219071
+
+ADT Set (dengan array eksplisit-statik)
+KAMUS UMUM
+constant MaxEl: integer = ... { Banyaknya elemen maksimum }
+type infotype: integer { elemen set }
+type address: integer { indeks tabel }
+type Set: <T: array [0..MaxEl-1] of infotype, { tabel penyimpan elemen set }
+	   NbElmt: integer { jumlah elemen set }>
+
+{ Deklarasi: S: Set
+Definisi akses (diimplementasikan sebagai selektor):
+NbMember(S) adalah S.NbElmt }
+
+LATIHAN SET
+1. Terurut berdasarkan nilainya
+procedure Insert(input/output S: Set, input ElmtS: infotype) 
+KAMUS LOKAL
+	m : address
+	i : address
+	function IsMember(S: Set, ElmtS: infotype) -> boolean
+	function BinIdx(S: Set, ElmtS: infotype) -> address
+	procedure Geser(input/output S: Set, input i: address, input a: integer)
+ALGORITMA
+	if not(IsMember(S,ElmtS)) then
+	   m <- BinIdx(S,ElmtS)
+	   if (ElmtS < S.Tab[m]) then
+	      i <- m-1
+	   else
+	      i <- m+1
+	   Geser(S,i,1)
+	   S.Tab[i] <- ElmtS
+	   NbMember(S) <- NbMember(S) + 1
+	   
+function BinIdx(S: Set, ElmtS: infotype) -> address
+KAMUS LOKAL
+	i : integer
+	j : integer
+	m : address
+ALGORITMA
+	i <- 0
+	j <- NbMember(S)-1
+	while (i<j) do
+	   m = floor((i+j)/2)
+	   if (ElmtS > S.Tab[m]) then
+	      i <- m + 1
+	   else
+	      j <- m
+	-> m
+
+procedure Geser(input/output S: Set, input i: address, input a: integer)
+{Menggeser elemen ke kiri (jika a=0) atau ke kanan (jika a=1)}
+KAMUS LOKAL
+	j : address
+ALGORITMA
+	if (a=0) then
+	   j traversal [i..NbMember(S)-1]
+	      S.Tab[j] <- S.Tab[j+1]
+	else
+	   j traversal [NbMember(S)-1..i]
+	      S.Tab[j+1] <- S.Tab[j]	   
+
+procedure Delete(input/output S: Set, input ElmtS: infotype) 
+KAMUS LOKAL
+	function IsMember(S: Set, ElmtS: infotype) -> boolean
+	function BinIdx(S: Set, ElmtS: infotype) -> address
+	procedure Geser(input/output S: Set, input i: address, input a: integer)
+ALGORITMA
+	if (IsMember(S,ElmtS)) then
+	   Geser(S,BinIdx(S,ElmtS),0)
+	   NbMember(S) <- NbMember(S) - 1
+	
+function IsMember(S: Set, ElmtS: infotype) -> boolean
+KAMUS LOKAL
+	m : address
+	function BinIdx(S: Set, ElmtS: infotype) -> address
+ALGORITMA
+	m <- BinIdx(S,ElmtS)
+	-> (ElmtS = S.Tab[m])
+	
+procedure Union(input S1: Set, input S2: Set, output S: Set)
+KAMUS LOKAL
+	j : address
+	k : address
+	procedure Insert(input/output S: Set, input ElmtS: infotype)
+ALGORITMA
+	j <- 0
+	k <- 0
+	NbMember(S) <- 0
+	j traversal [0..NbMember(S1)-1]
+	   Insert(S,S1[j])
+	k traversal [0..NbMember(S2)-1]
+	   Insert(S,S2[k])
+
+
+2. Berdasarkan urutan insert
+procedure Insert(input/output S: Set, input ElmtS: infotype) 
+KAMUS LOKAL
+	function IsMember(S: Set, ElmtS: infotype) -> boolean
+ALGORITMA
+	if not(IsMember(S,ElmtS)) then
+	   S.Tab[NbMember(S)] <- ElmtS
+	   NbMember(S) <- NbMember(S) + 1
+
+procedure Delete(input/output S: Set, input ElmtS: infotype) 
+KAMUS LOKAL
+	function IsMember(S: Set, ElmtS: infotype) -> boolean
+	procedure Geser(input/output S: Set, input i: address)
+	function Search(S: Set, ElmtS: infotype) -> address
+ALGORITMA
+	if (IsMember(S,ElmtS)) then
+	   Geser(S,Search(S,ElmtS))
+	   NbMember(S) <- NbMember(S) - 1
+
+procedure Geser(input/output S: Set, input i: address)
+KAMUS LOKAL
+	j : address
+ALGORITMA
+	j traversal [i..NbMember(S)-1]
+	   S.Tab[j] <- S.Tab[j+1]	   
+	
+function Search(S: Set, ElmtS: infotype) -> address
+KAMUS LOKAL
+	i : address
+	found : boolean
+ALGORITMA
+	i <- 0
+	found <- False
+	while ((i<NbMember(S)) and not(found)) do
+	   if (S.Tab[i] = ElmtS) then
+	      found <- True
+	   else
+	      i <- i + 1;
+	if not(found) then
+	   i <- -1
+	-> i
+
+function IsMember(S: Set, ElmtS: infotype) -> boolean
+KAMUS LOKAL
+	function Search(S: Set, ElmtS: infotype) -> address
+ALGORITMA
+	-> (Search(S,ElmtS)>-1)
+	
+procedure Union(input S1: Set, input S2: Set, output S: Set)
+KAMUS LOKAL
+	j : address
+	k : address
+	procedure Insert(input/output S: Set, input ElmtS: infotype) 
+ALGORITMA
+	j <- 0
+	k <- 0
+	NbMember(S) <- 0
+	j traversal [0..NbMember(S1)-1]
+	   Insert(S,S1[j])
+	k traversal [0..NbMember(S2)-1]
+	   Insert(S,S2[k])
+
+
+LATIHAN MAP (Membuat Set dengan Hash function)
+procedure Insert(input/output S: Set, input ElmtS: infotype) 
+KAMUS LOKAL
+	i : address
+	function IsMember(S: Set, ElmtS: infotype) -> boolean
+ALGORITMA
+	if not(IsMember(S,ElmtS)) then
+	   i <- hash(ElmtS)
+	   while S.Tab[i] != Nil do
+	      i <- (i+1) mod MaxEl
+	   S.Tab[i] <- ElmtS
+	   NbMember(S) <- NbMember(S) + 1
+
+procedure Delete(input/output S: Set, input ElmtS: infotype) 
+KAMUS LOKAL
+	i : address
+	function IsMember(S: Set, ElmtS: infotype) -> boolean
+ALGORITMA
+	if (IsMember(S,ElmtS)) then
+	   i <- hash(ElmtS)
+	   while S.Tab[i] != ElmtS do
+	      i <- (i+1) mod MaxEl
+	   S.Tab[i] <- Nil
+	   NbMember(S) <- NbMember(S) - 1
+
+function IsMember(S: Set, ElmtS: infotype) -> boolean
+KAMUS LOKAL
+	awal : address
+	i : address
+	result : boolean
+ALGORITMA
+	awal <- hash(ElmtS)
+	result <- False
+	if (S.Tab[awal] = ElmtS) then
+	    result <- True
+	else
+	   i <- (awal + 1) mod MaxEl
+	   while (S.Tab[i] != Nil) and (i != awal) and not(result) do
+	      if (S.Tab[i] = ElmtS) then
+	         result <- True 
+	      i <- (i+1) mod MaxEl
+
+	//atauuu
+	i <- hash(ElmtS) mod MaxEl
+	ctr <- 0
+	while (S.Tab[i] != ElmtS) and (ctr<NbMember(S)) do
+	      ctr <- ctr + 1
+	      i <- (i+1) mod MaxEl
+	-> (S.Tab[i] = ElmtS)
+
+procedure Union(input S1: Set, input S2: Set, output S: Set)
+KAMUS LOKAL
+	j : address
+	k : address
+	procedure Insert(input/output S: Set, input ElmtS: infotype)
+ALGORITMA
+	j <- 0
+	k <- 0
+	NbMember(S) <- 0
+	j traversal [0..MaxEl-1]
+	   if (S1[j] != Nil)
+	      Insert(S,S1[j])
+	k traversal [0..MaxEl-1]
+	   if (S2[k] != Nil)
+	      Insert(S,S2[k])
+
+
+ANALISIS
+Algoritma yang paling efektif dan efisien adalah dengan menggunakan fungsi Hash.
+Karena ketika melakukan insert atau delete langsung ke indeks tujuan, atau jika collision,
+hanya diincrement sedikit sampai ke indeksnya. Ketika ingin mengecek keberadaan (IsMember) 
+juga dapat lgs melihat indeks yang bernilai hash, atau jika collision akan dicari dengan
+increment.

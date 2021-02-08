@@ -1,0 +1,345 @@
+Program COUNTKARAKTER
+{ Skema pemrosesan dengan Mark
+  menghitung banyaknya huruf pada pita karakter }
+KAMUS
+	CI : integer
+ALGORITMA
+	CI <- 0
+	START
+	While (CC!=MARK)do
+		CI <- CI + 1
+		ADV
+	output(CI)
+
+Program COUNT_A
+{ Skema pemrosesan dengan Mark
+  menghitung banyaknya huruf A pada pita karakter }
+KAMUS
+	CI : integer
+ALGORITMA
+	CI <- 0
+	START
+	While (CC!=MARK) do
+		if CC = "A" then
+			CI <- CI + 1
+		ADV
+	output(CI)
+
+Program Hitung_LEv1
+KAMUS
+	CC1 : character
+	N : integer
+ALGORITMA
+	CC1 <- '*'
+	N <- 0
+	START
+	while (not EOP) do
+		if (CC1 = "L") and (CC = "E") then
+			N <- N + 1
+		CC1 <- CC
+		ADV
+	output (N)
+
+Program Hitung_LEv2
+{ menghitung kemunculan LE pada pita karakter }
+KAMUS
+	N : integer
+ALGORITMA
+	N <- 0
+	START
+	while (not EOP) do
+		if (CC="L") then
+			repeat
+				ADV
+			until (CC != "L")
+			if (CC = "E") then
+				N <- N + 1
+				ADV
+		else
+			ADV
+		output(N)
+
+Primitif Mesin kata versi 1
+procedure Ignore_Blank
+ALGORTIMA
+	while (CC = BLANK) do
+		ADV
+
+procedure STARTKATA
+ALGORTIMA
+	START
+	Ignore_Blank
+	if (CC = MARK) then
+		EndKata <- true
+	else
+		EndKata <- false
+		SalinKata
+
+procedure ADVKATA
+	Ignore_Blank
+	if (CC = MARK) then
+		EndKata <- true
+	else
+		SalinKata
+
+procedure SalinKata
+	i <- 0
+	repeat
+		CKata.TabKata[i] <- CC
+		ADV
+		i <- i + 1
+	until (CC = MARK) or (CC = BLANK)
+	CKata.Length <- i
+
+Primitif Mesin kata versi 2
+procedure Ignore_Blank
+ALGORTIMA
+	while (CC = BLANK) do
+		ADV
+
+procedure STARTKATA
+ALGORTIMA
+	START
+	Ignore_Blank
+	SalinKata
+
+procedure ADVKATA
+	Ignore_Blank
+	SalinKata
+
+procedure SalinKata
+	i <- 0
+	while (CC!=MARK) and (CC!=BLANK)do
+		CKata.TabKata[i] <- CC
+		ADV
+		i <- i + 1
+	CKata.Length <- i
+
+Primitif Mesin kata versi 3
+procedure Ignore_Blank
+ALGORTIMA
+	while (CC = BLANK) do
+		ADV
+
+procedure INITAKSES
+ALGORTIMA
+	START
+	Ignore_Blank
+
+procedure ADVKATA
+	SalinKata
+	Ignore_Blank
+
+procedure SalinKata
+	i <- 0
+	repeat
+		CKata.TabKata[i] <- CC
+		ADV
+		i <- i + 1
+	until(CC =MARK) or (CC = BLANK)
+	CKata.Length <- i
+
+Latihan Mesin Kata
+Nadya Laurentia / 18219071 / Kelas 01
+
+SOAL 1
+Program FrekuensiKataPertama
+{ Menghitung frekuensi kemunculan kata pertama dalam pita karakter }
+{ Model akuisisi kata versi 1 }
+KAMUS
+	{ *** Mesin yang digunakan *** }
+	USE MesinKata1
+
+	n: integer { banyaknya kata pertama dalam pita }
+	first :  Kata { kata pertama }
+	i : integer
+
+	function IsKataSama (K1, K2: Kata) -> boolean
+	procedure CopyKata (input Kin :kata,output Kout :Kata)
+	{Menghasilkan true jika K1 = K2}
+ALGORITMA
+	n <- 0
+	STARTKATA
+	if (EndKata) then
+	   output("Pita karakter kosong")
+	else
+	   CopyKata(CKata,first)
+	   n <- 1
+	   ADVKATA
+	   while not(EndKata) do
+	      if IsKataSama(first, CKata) then
+	         n <- n+1
+	      ADVKATA
+	   output (n)
+	
+
+REALISASI FUNGSI
+procedure CopyKata (input Kin : kata,output Kout : Kata)
+KAMUS LOKAL
+	i : integer
+ALGORTIMA
+	i <- 0
+	while (i < Kin.Length) do
+		Kout.TabKata[i] <- Kin.TabKata[i]
+		i <- i + 1
+	Kout.Length <- Kin.Length
+
+function IsKataSama (K1, K2: Kata) -> boolean
+{Menghasilkan true jika K1 = K2}
+KAMUS LOKAL
+	sama : boolean
+	i : integer
+ALGORITMA
+	sama <- True
+	i <- 0
+	if (K1.Length != K2. Length) then
+	  sama <- False
+	else
+	  while (i<=K1.Length-1) and (sama) do
+	    if (K1.TabKata[i] != K2.TabKata[i]) then
+	       sama <- False
+	    i <- i + 1
+	 
+	return sama
+
+SOAL 2
+Program Anagram
+{ Menghitung banyak kata yang anagram dengan kata pertama dalam pita karakter }
+{ Model akuisisi kata versi 1 }
+KAMUS
+	{ *** Mesin yang digunakan *** }
+	USE MesinKata1
+
+	n: integer { banyaknya kata yang anagram dengan kata pertama dalam pita }
+	first :  Kata { kata pertama }
+	i : integer
+
+	function IsAnagram (K1, K2: Kata) -> boolean
+	{Menghasilkan true K2 anagram K1}
+ALGORITMA
+	n <- 0
+	STARTKATA
+	if (EndKata) then
+	   output("Pita karakter kosong")
+	else
+	   i traversal [0..CKata.Length-1]	
+	     first.TabKata[i] <- CKata.TabKata[i]
+	   ADVKATA
+	   while not(EndKata) do
+	      if IsAnagram(first,CKata) then
+	         n <- n+1
+	      ADVKATA
+	   output (n)
+
+REALISASI FUNGSI
+function IsAnagram (K1, K2: Kata) -> boolean
+{Menghasilkan true jika K2 adalah anagram dari K1}
+KAMUS LOKAL
+	i : integer
+	found : boolean
+	function Count(C : character, K : Kata) -> integer
+
+ALGORITMA
+	if (K1.Length != K2.Length) then
+		-> false
+	else
+		i <- 0
+		found <- false
+		while i < K1.Length and not found do
+			if (Count(K1.TabKata[i],K1) != Count(K1.TabKata[i],K2))
+				found <- true
+			else
+				i <- i + 1
+		-> not found
+	
+function Count(C : character, K : Kata) -> integer
+Kamus LOKAL
+	i : integer
+	Nb : integer
+ALGORITMA
+	i <- 0
+	Nb <- 0
+	while i < K.Length do
+		if K.TabKata[i] = C then
+			Nb <- Nb + 1
+		i <- i + 1
+	-> Nb
+
+SOAL 3
+Program MesinToken
+{ Menuliskan ekspresi matematika dari pita karakter }
+{ Model akuisisi kata versi 1 }
+KAMUS
+	{ *** Mesin yang digunakan *** }
+	USE MesinKata1
+
+	i : integer
+	j : integer
+	k : integer
+	resetIdx : integer
+	Arr : array of string
+	tempArr : array of string
+
+	function IsOperator (x : string) -> boolean
+	{Menghasilkan true jika x adalah operator}
+ALGORTIMA
+i <- 0
+STARTKATA
+while not(EndKata) do
+  Arr[i] <- CKata
+  ADVKATA
+  i <- i + 1
+
+while (len(Arr) > 0) do
+	i <- len(Arr) - 1	
+	j <- 0 
+	k <- 0
+	while (j <= i) do
+	  if (j+2 <= i) then
+	    if (not(IsOperator(Arr[j])) and not(IsOperator(Arr[j+1])) and IsOperator(Arr[j+2])) then
+	      tempArr[k] <- "(" + Arr[j] + Arr[j+2] + Arr[j+1] + ")"
+	      k <- k + 1
+	      j <- j + 3
+	    else
+	      tempArr[k] <- Arr[j]
+	      k <- k + 1
+	      j <- j + 1
+	  else
+	    tempArr[k] <- Arr[j]
+	    k <- k + 1
+	    j <- j + 1
+
+	resetIdx traversal [0..i]
+	   Arr[resetIdx] <- 0
+	
+	j <- 0
+	i <- 0 
+	while (j <= i) do
+	  if (j+2 <= i) then
+	    if (not(IsOperator(tempArr[j])) and not(IsOperator(tempArr[j+1])) and IsOperator(tempArr[j+2])) then
+	      Arr[i] <- "(" + tempArr[j] + tempArr[j+2] + tempArr[j+1] + ")"
+	      i <- i + 1
+	      j <- j + 3
+	    else
+	      Arr[i] <- tempArr [j]
+	      i <- i + 1
+	      j <- j + 1
+	  else
+	    Arr[i] <- tempArr [j]
+	    i <- i + 1
+	    j <- j + 1
+	
+	resetIdx traversal [0..idx]
+	   tempArr[resetIdx] <- 0
+
+output Arr	  
+
+REALISASI FUNGSI
+function IsOperator (x : string) -> boolean
+{Menghasilkan true jika x adalah operator}
+KAMUS LOKAL
+ALGORITMA
+if (x="+") or (x="-") or (x="*") or (x="/") or (x="^") then
+  return True
+else
+  return False

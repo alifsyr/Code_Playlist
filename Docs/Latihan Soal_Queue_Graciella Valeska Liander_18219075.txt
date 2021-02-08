@@ -1,0 +1,176 @@
+# Nama	: Graciella Valeska Liander
+# NIM	: 18219075
+
+# QUEUE
+
+# Soal 1 Circular Buffer
+
+KAMUS UMUM
+
+constant Nil	: -1
+constant MaxEl	: 100
+
+type infotype : < id	: integer
+		  lama	: integer
+		>
+type address : integer
+type queue : < 	T: array [0..MaxEl-1] of infotype
+		HEAD	: address
+		COUNT	: integer
+	     >
+
+function IsFull (Q: Queue) → boolean
+{mengirim true jika Q penuh}
+
+KAMUS LOKAL
+
+ALGORITMA
+	-> Q.COUNT = MaxEl
+
+procedure Enqueue (input/output Q: Queue, input X: infotype)
+{Proses: menambahkan elemen X pada Q sebagai Tail baru}
+{IS: Q mungkin kosong, Q tidak penuh}
+{FS: X menjadi Tail baru dengan mekanisme circular buffer}
+
+KAMUS LOKAL
+
+ALGORITMA
+	if (Q.COUNT = 0) then
+		Q.HEAD <- 0
+		Q.T[Q.HEAD] <- X
+	else
+		Q.T[(Q.HEAD + Q.COUNT) mod MaxEL] <- X
+	Q.COUNT <- Q.COUNT + 1
+
+procedure Dequeue (input/output Q: Queue, output X: infotype)
+{Proses: menghapus elemen X pada Head Q}
+{IS: Q tidak kosong}
+{FS: X adalah nilai elemen Head, Head “bergerak” dengan mekanisme
+     circular buffer. Q mungkin kosong}
+
+KAMUS LOKAL
+
+ALGORITMA
+	X <- Q.T[Q.HEAD] 
+	if (Q.COUNT = 1) then
+		Q.HEAD <- Nil
+	else
+		Q.HEAD <- (Q.HEAD + 1) mod MaxEl
+	Q.COUNT <- Q.COUNT - 1 
+
+
+# Soal 2 Round Robin
+
+procedure ProcessRR(input/output Q: Queue, input T: integer)
+{Proses: memproses elemen antrian Q secara round robin}
+{IS: Q tidak kosong, T adalah waktu yang tersedia untuk memproses
+     setiap elemen}
+{FS: elemen E pada posisi HEAD dihapus dari Q.
+     Jika waktu E ≤ T maka ditampilkan “<id> telah selesai diproses”.
+     Jika waktu E > T maka E disisipkan kembali sebagai tail Q
+     dengan waktu berkurang sebanyak T }
+
+KAMUS LOKAL
+	X : infotype
+	id: integer
+
+ALGORITMA
+	if (Q.COUNT != 0) then
+		if (Q.T[Q.HEAD].lama <= T) then
+			id <- Q.T[Q.HEAD].id
+			Dequeue(Q)
+			output(id, "telah selesai diproses")
+		else
+			Q.T[Q.HEAD].lama <- Q.T[Q.HEAD].lama - T 
+			X <- Q.T[Q.HEAD]
+			Dequeue(Q)
+			Enqueque(Q, X)
+
+# Soal 3 Priority Queue
+
+procedure Enqueue(input/output Q: Queue, input X: infotype)
+{Proses: menambahkan elemen X sebagai elemen Q baru, dengan
+	 memperhatikan lamanya waktu pekerjaan tsb dapat
+	 diselesaikan. Yaitu pekerjaan yang lebih lama diletakkan
+	 lebih akhir. Jika ada 2 pekerjaan yang lama waktunya sama,
+	 pekerjaan terakhir yang baru datang disisipkan lebih
+	 belakang}
+{I.S.: Q mungkin kosong, Q tidak penuh}
+{F.S.: X menjadi elemen Q yang baru dengan urutan waktu pekerjaan
+       membesar}
+
+KAMUS LOKAL
+	i : int
+	
+ALGORITMA
+	if (Q.COUNT = 0) then
+		Q.HEAD <- 0
+		Q.T[Q.HEAD] <- X
+	else
+		if (Q.COUNT + Q.HEAD -1 = MaxEl) then
+			i traversal [Q.HEAD..MaxEl]
+				Q.T[i - 1] <- Q.T[i]
+			Q.HEAD <- Q.HEAD - 1
+			Q.T[Q.HEAD + Q.COUNT - 1] <- X
+		else
+			Q.T[Q.HEAD + Q.COUNT] <- X
+
+		i <- Q.HEAD + Q.COUNT - 1
+		while (i > Q.HEAD ) and (Q.T[i-1].lama > X.lama) do
+			Q.T[i] <- Q.T[i - 1]
+			Q.[i - 1] <- X 
+			i <- i - 1
+	Q.COUNT <- Q.COUNT + 1
+
+# Dengan menggunakan alternatif 2 (TAIL)
+
+procedure Enqueue(input/output Q: Queue, input X: infotype)
+
+KAMUS LOKAL
+	i : int
+	
+ALGORITMA
+	if (Q.TAIL = -1) and (Q.HEAD = -1) then
+		Q.HEAD <- 0
+		Q.TAIL <- 0
+		Q.T[Q.HEAD] <- X
+	else
+		if (Q.TAIL = IdxMax) and (Q.HEAD != 0) then
+			i traversal [Q.HEAD..IdxMax]
+				Q.T[i - 1] <- Q.T[i]
+			Q.HEAD <- Q.HEAD - 1
+			Q.TAIL <- Q.TAIL - 1
+		i <- Q.TAIL
+		while (i > Q.HEAD) and (Q.T[i].lama > X.lama) do
+			Q.T[i] <- Q.T[i - 1]
+			Q.[i - 1] <- X 
+			i <- i - 1
+
+procedure Dequeue(input/output Q: Queue, output X: infotype)
+{Proses: menghapus elemen pada HEAD, dan menyimpan nilanya pada X}
+{IS: Q tidak kosong}
+{FS: elemen pada HEAD dihapus, dan disimpan nilainya pada X}
+
+KAMUS LOKAL
+
+ALGORITMA
+	if (Q.COUNT != 0) then
+		X <- Q.T[Q.HEAD] 
+		if (Q.COUNT = 1) then
+			Q.HEAD <- Nil
+		else
+			Q.HEAD <- (Q.HEAD + 1) mod MaxEl
+		Q.COUNT <- Q.COUNT - 1 
+
+# Dengan menggunakan alternatif 2 (TAIL)
+
+procedure Dequeue(input/output Q: Queue, output X: infotype)
+
+KAMUS LOKAL
+
+ALGORITMA
+	if (Q.TAIL = Q.HEAD) then
+		Q.HEAD <- Nil
+		Q.TAIL <- Nil
+	else
+		Q.HEAD <- Q.HEAD + 1

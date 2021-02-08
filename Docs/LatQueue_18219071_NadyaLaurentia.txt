@@ -1,0 +1,183 @@
+LATIHAN SOAL QUEUE
+Nadya Laurentia / 18219071
+
+
+SOAL 1
+a.
+constant Nil: integer = -1
+constant MaxEl: integer = 100
+
+type address : integer
+type infotype : <id: integer, lama: integer>
+
+type Queue: <T: array [0..MaxEl-1] of infotype,
+	     HEAD: address,
+	     COUNT: integer>
+
+b.
+function IsFull(Q: Queue) -> boolean
+{mengirim true jika Q penuh}
+KAMUS LOKAL
+ALGORITMA
+	-> Q.COUNT = MaxEl
+
+c.
+procedure Enqueue(input/output Q: Queue, input X: infotype)
+{Proses: menambahkan elemen X pada Q sebagai Tail baru}
+{IS: Q mungkin kosong, Q tidak penuh}
+{FS: X menjadi Tail baru dengan mekanisme circular buffer}
+KAMUS LOKAL
+	i : address
+	function IsEmpty(Q: Queue) -> boolean
+ALGORITMA
+	if (IsEmpty(Q)) then
+	   Q.HEAD <- 0
+
+	i <- (Q.HEAD+Q.COUNT) mod (MaxEl) {INI TADINYA SALAH, UDH DIBENERIN, MODNYA BUKAN MAXEL-1!!!}
+	Q.T[i] <- X
+	Q.COUNT <- Q.COUNT + 1
+	      
+function IsEmpty(Q: Queue) -> boolean
+{Mengembalikan true jika queue kosong}
+KAMUS LOKAL
+ALGORITMA
+	-> Q.COUNT = 0
+
+d.
+procedure Dequeue(input/output Q: Queue, output X: infotype)
+{Proses: menghapus elemen X pada Head Q}
+{IS: Q tidak kosong}
+{FS: X adalah nilai elemen Head, Head “bergerak” dengan mekanisme
+circular buffer. Q mungkin kosong}
+KAMUS LOKAL
+ALGORITMA
+	X <- Q.T[Q.HEAD]
+	if (Q.COUNT = 1) then
+	   Q.HEAD <- Nil
+	else	
+	   Q.HEAD <- (Q.HEAD+1) mod (MaxEl) {INI TADINYA SALAH, UDH DIBENERIN, MODNYA BUKAN MAXEL-1!!!}
+
+	Q.COUNT <- Q.COUNT - 1
+
+
+SOAL 2
+procedure ProcessRR(input/output Q: Queue, input T: integer)
+{Proses: memproses elemen antrian Q secara round robin}
+{IS: Q tidak kosong, T adalah waktu yang tersedia untuk memproses
+setiap elemen}
+{FS: elemen E pada posisi HEAD dihapus dari Q.
+Jika waktu E ≤ T maka ditampilkan “<id> telah selesai
+diproses”.
+Jika waktu E > T maka E disisipkan kembali sebagai tail Q
+dengan waktu berkurang sebanyak T }
+KAMUS LOKAL
+	procedure Enqueue(input/output Q: Queue, input X: infotype)
+	procedure Dequeue(input/output Q: Queue, output X: infotype)
+ALGORITMA
+	if (Q.T[Q.HEAD].lama <= T) then
+	   output(Q.T[Q.HEAD].id, "telah selesai diproses")
+	else
+	   Q.T[Q.HEAD].lama <- Q.T[Q.HEAD].lama - T
+	   Enqueue(Q, Q.T[Q.HEAD])
+	Dequeue(Q,X) {UDH DIBENERIN, DEQUEUE ITU 2 PARAMETER BEB!}
+	
+	//cara bapa//
+	Dequeue(Q,X)
+	if (X.lama <= T) then
+	   output(X.id, "telah selesai diproses")
+	else
+	   X.lama <- X.lama - T
+	   Enqueue(Q, X)
+
+
+SOAL 3
+a.
+constant Nil: integer = -1
+
+type address : integer
+type infotype : <id: integer, lama: integer>
+
+type Queue: <T: array [0..MaxEl-1] of infotype,
+	     HEAD: address,
+	     TAIL: integer,
+	     MaxEl: integer>
+
+{Deklarasi: Q: Queue
+Definisi akses (diimplementasikan sebagai selektor):
+Head(Q) adalah Q.HEAD
+InfoHead(Q) adalah Q.T[Q.HEAD]
+Tail(Q) adalah Q.TAIL
+InfoTail(Q) adalah Q.T[Q.TAIL]
+MaxEl(Q) adalah Q.MaxEl}
+
+b.
+procedure Enqueue(input/output Q: Queue, input X: infotype)
+{Proses: menambahkan elemen X sebagai elemen Q baru, dengan
+memperhatikan lamanya waktu pekerjaan tsb dapat
+diselesaikan. Yaitu pekerjaan yang lebih lama diletakkan
+lebih akhir. Jika ada 2 pekerjaan yang lama waktunya sama,
+pekerjaan terakhir yang baru datang disisipkan lebih
+belakang}
+{IS: Q mungkin kosong, Q tidak penuh}
+{FS: X menjadi elemen Q yang baru dengan urutan waktu pekerjaan
+membesar}
+KAMUS LOKAL
+	i,j : address
+	function IsEmpty(Q: Queue) -> boolean
+	procedure geser(input/output Q: Queue)
+ALGORITMA
+	if (IsEmpty(Q)) then
+	   Head(Q) <- 0
+	   InfoHead(Q) <- X
+	else
+	   if (Tail(Q)=MaxEl(Q)) then
+	      geser(Q)
+
+	   i <- Tail(Q)
+	   found <- false
+	   repeat
+	      if (Q.T[i].lama <= X.lama) then
+	         found <- True
+	      else
+	         i <- i - 1
+	   until (i>=Head(Q)) or found
+
+	   if (i = Tail(Q)) then
+	      Q.T[i+1] <- X
+	   else
+	      j traversal [Tail(Q)..i]
+	         Q.T[j+1] <- Q.T[j]
+	      Q.T[i] <- X
+	
+	Tail(Q) <- Tail(Q) + 1
+
+procedure geser(input/output Q: Queue)
+{Proses: menggeser elemen Q hingga Head(Q) = 0}
+{IS : Q penuh semu}
+{FS : Q rata kiri}
+KAMUS LOKAL
+	i : address
+ALGORITMA
+	i traversal [Head(Q)..Tail(Q)]
+	   Q.T[i-Head(Q)] <- Q.T[i]
+	Head(Q) <- 0
+	Tail(Q) <- Tail(Q) - Head(Q)
+
+{LEBIH BAIK CARI POSISI DLU BARU GESER RATA KIRI SUPAYA LEBIH EFISIEN}
+{KALO GESER, GESER AJA, YG SISANYA ANTEPIN AJAA ANGGEP ISINYA SAMPAH, GA PERLU DI-0-IN, LIAT YG HEAD-TAILNYA AJA}
+  
+c.
+procedure Dequeue(input/output Q: Queue, output X: infotype)
+{Proses: menghapus elemen pada HEAD, dan menyimpan nilanya pada X}
+{IS: Q tidak kosong}
+{FS: elemen pada HEAD dihapus, dan disimpan nilainya pada X}   
+KAMUS LOKAL
+ALGORITMA
+	X <- InfoHead(Q)
+	if (Head(Q) = Tail(Q)) then
+	   Head(Q) <- Nil
+	   Tail(Q) <- Nil
+	else	
+	   Head(Q) <- Head(Q) + 1
+
+{DISIMPAN KE X KARENA KL DIKELUARIN ARTINYA DILAYANI/DIPROSES, JD ABIS DEQUEUE BISA LGS OPERASIIN X-NYA DEH}

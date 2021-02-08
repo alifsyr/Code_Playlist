@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
 #Barra Alfarisi Abadi // 16519007
 
 count = 0

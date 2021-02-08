@@ -1,0 +1,193 @@
+# Nama	: Graciella Valeska Liander
+# NIM	: 18219075
+
+procedure CreateEmpty(output S : Stack)
+ALGORITMA
+	TOP(S) <- Nil
+
+function IsEmpty(S:Stack) -> boolean
+ALGORITMA
+	-> TOP(S) = Nil
+
+function IsFull(S: Stack S) -> boolean
+ALGORITMA
+	-> TOP(S) = MaxEl-1
+
+procedure Push
+	TOP(S) <- TOP(S) + 1
+	InfoTOP(S) <- X
+
+procedure Pop
+	X <- InfoTOP(S)
+	TOP(S) <- TOP(S) - 1
+
+# Latihan ADT Stack
+
+# Soal 1
+procedure CopyStack(input Sin: Stack, output Sout: Stack)
+{ Membuat salinan Sin }
+{ I.S. Sin terdefinisi, Sout sembarang }
+{ F.S. Sout berisi salinan Sin yang identik }
+
+KAMUS LOKAL
+	temp : Stack
+	i    : int
+
+ALGORITMA
+	CreateEmpty(temp)
+	i traversal [0..MaxEl-1]
+		Pop(Sin, X)
+		Push(temp, X)
+	i traversal [0..MaxEl-1]
+		Pop(temp, X)
+		Push(Sout, X)
+
+procedure InverseStack(input/output S: Stack)
+{ Membalik isi suatu stack }
+{ I.S. S terdefinisi }
+{ F.S. Isi S terbalik dari posisi semula }
+
+KAMUS LOKAL
+	temp : Stack
+	i    : int
+
+ALGORITMA
+	CreateEmpty(temp)
+	i traversal [0..MaxEl-1]
+		Pop(S, X)
+		Push(temp, X)
+	CopyStack(temp, S)
+
+function MergeStack(S1,S2: Stack) → Stack
+{ Menghasilkan sebuah stack yang merupakan hasil penggabungan S1
+  dengan S2 dengan S1 berada di posisi lebih “bawah”. Urutan kedua
+  stack harus sama seperti aslinya. }
+{ Stack baru diisi sampai seluruh elemen S1 dan S2 masuk ke dalam
+  stack, atau jika stack baru sudah penuh, maka elemen yang
+  dimasukkan adalah secukupnya yang dapat ditampung. }
+
+KAMUS LOKAL
+	stack : Stack
+	i     : int
+ALGORITMA
+	CreateEmpty(stack)
+	i traversal [0..MaxEl-1] 
+		Pop(S1, X)
+		Push(stack, X)
+	InverseStack(stack)
+	CreateEmpty(temp)
+	i traversal [0..MaxEl-1]
+		Pop(S2, X)
+		Push(stack, X)
+	i traversal [0..MaxEl-1]
+		Pop(temp, X)
+		Push(stack, X)
+	-> stack
+//// Cara lain
+	CreateEmpty(stack)
+	CopyStack(stack, S1)
+	InverseStack(S2)
+	while (!isEmpty(S2)) and (!isFull(stack)) do
+		Pop(S2,X)
+		Push(stack, X)
+	-> stack
+
+# Soal 2
+
+Program EKSPRESI
+
+USE STACK, TOKEN
+
+KAMUS
+	type token	: token
+	S	  	: STACK
+	CT, Op1, Op2	: token
+
+	procedure FirstToken
+	{ Mengirim token yang pertama }
+	
+	KAMUS LOKAL
+
+	ALGORITMA
+		START
+		IgnoreBlank
+		if not EndToken then
+			SalinToken
+		
+	procedure NextToken
+	{ Mengirim token yang berikutnya }
+	
+	KAMUS LOKAL
+
+	ALGORITMA
+		IgnoreBlank()
+		if not(EndToken) then
+			SalinToken
+
+	function EndToken (CT: token) -> boolean
+	{ Menghasilkan true jika proses akuisisi mendapat hasil sebuah
+	token kosong. Merupakan akhir ekspresi }
+	
+	KAMUS LOKAL
+	
+	ALGORITMA
+		-> CT = MARK 
+
+	function IsOperator(CT: token) -> boolean
+	{ Menghasilkan true jika CT adalah operator }
+	
+	KAMUS LOKAL
+	
+	ALGORITMA
+		-> (CT = '+') OR (CT = '-') OR (CT = '/') OR 
+		   (CT = '*') OR (CT = '^') 
+
+	function Hitung(OP1,OP2,Operator: token) -> token
+	{ Menghitung ekspresi, mengkonversi hasil menjadi token}
+
+	KAMUS LOKAL
+
+	ALGORITMA
+		if (token = "+") then
+			-> toToken(Op1 + Op2)
+		else if (token = "-") then
+			-> toToken(Op1 - Op2)
+		else if (token = "/") then
+			-> toToken(Op1 / Op2) 
+		else if (token = "*") then
+			-> toToken(Op1 * Op2) 
+		else if (token = "^") then
+			-> toToken(Op1 ** Op2) 
+
+	function toInt (CT: token) -> int
+	{ Mengubah token menjadi integer }
+
+	KAMUS LOKAL
+
+	ALGORITMA
+		-> int(CT)
+
+	function toToken (X: int) -> toke
+	{ Mengubah integer menjadi token }
+	
+	KAMUS LOKAL
+
+	ALGORITMA
+		-> str(X)		
+
+ALGORITMA
+	FirstToken
+	if (EndToken) then
+		output ("Ekspresi kosong")
+	else
+		repeat
+			depend on (CT)
+				not IsOperator(CT):
+					Push(S,CT)
+				IsOperator(CT):
+					Pop (S,Op2)
+					Pop (S,Op1)
+					Push(S,Hitung(Op1,Op2,CT))
+			NextToken(CT)
+		until (EndToken)
+		output (InfoTop(S))

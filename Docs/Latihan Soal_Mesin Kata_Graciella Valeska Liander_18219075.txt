@@ -1,0 +1,269 @@
+Latihan Mesin Kata
+
+Nama	: Graciella Valeska Liander
+NIM	: 18219075
+
+# Fungsi Pembantu
+Function IsKataSama (Kata1, Kata2: Kata) -> boolean
+{ Mengirimkan true jika Kata1 = Kata2, yaitu jika panjang Kata1 = Kata2
+  dan semua elemen L1 dan L2 pada indeks yang sama bernilai sama }
+
+KAMUS
+	USE MesinKata1
+
+	Kata1, Kata2	: Kata
+	
+ALGORITMA
+	if ( Kata1.Length = Kata2.Length ) then
+		while ( i < Kata1.Length and (Kata1.TabKata[i] = Kata2.TabKata[i])) do
+			i <- i + 1
+		-> Kata1.TabKata[i] = Kata2.TabKata[i]
+	else
+		-> false
+
+Procedure Sort (input/output: Kata)
+{ Mengurutkan kata }
+
+KAMUS LOKAL
+	USE MesinKata1
+
+	i, pass, K	: integer 
+	temp		: character
+	Kata		: Kata
+
+ALGORITMA
+	if (Kata.Length > 1) then
+		pass traversal [1..Kata.Length-1]
+			K traversal [Kata.length..pass+1]
+				if (Kata.TabKata[k] < Kata.TabKata[k-1]) then
+					temp <- Kata.TabKata[k]
+					Kata.TabKata[k] <- Kata.TabKata[k-1]
+					Kata.TabKata[k-1] <- temp 
+			
+
+
+Function IsAnagram (Kata1, Kata2: Kata) -> boolean
+{ Mengirimkan true jika Kata1 adalah anagram dari Kata2, 
+  yaitu jika panjang Kata1 = Kata2
+  dan semua elemen pada L1 terdapat pada L2 }
+
+KAMUS
+	Kata1, Kata2	: Kata
+	
+ALGORITMA
+	-> IsKataSama (Sort(Kata1), Sort(Kata2))
+
+
+# Soal 1 Frekuensi Kata Pertama
+Program Hitung Frekuensi Kata Pertama
+{ Menghitung frekuensi kemunculan kata pertama }
+{ Model akuisisi kata versi 1 }
+
+KAMUS
+	USE MesinKata1
+	
+	count 		: integer
+	KataPertama	: Kata
+
+ALGORITMA	
+	STARTKATA
+	if ( CKata.Length = 0 ) then
+		output ("Pita karakter kosong")
+	else
+		KataPertama <- CKata
+		countKata <- 0
+		countSama <- 0
+		while not EndKata do
+			countKata <- countKata + 1
+			if IsKataSama(KataPertama, CKata) then
+				countSama <- countSama + 1
+			ADVKATA
+		output (countSama + '/' + countKata)
+		
+
+# Soal 2 Anagram
+Program Anagram
+{ Menghitung banyaknya kata yang anagram dengan kata pertama }
+{ Model akuisisi kata versi 1 }
+
+KAMUS
+	USE MesinKata1
+	
+	count 		: integer
+	KataPertama	: Kata
+
+ALGORITMA	
+	STARTKATA
+	KataPertama <- CKata
+	count <- 0
+	while not EndKata do
+		if IsAnagram(KataPertama, CKata) then
+			count <- count + 1
+		ADVKATA
+	output (count-1)
+
+
+# Soal 3 Mesin Token
+
+KAMUS UMUM
+	use MESINKAR
+	
+	{***** Konstanta ******}
+	constant MARK : character = '.'
+	constant BLANK: character = ' ' 
+	constant operator : character = [*, /, +, -, ^]
+
+
+	{***** Definisi Type TOKEN ******}
+	type TOKEN	: < Operan1, Operan2, Operator: string >
+	type Element 	: string
+	
+	{***** Definisi State Mesin Kata ******}
+	EndElement 	: boolean
+	CElement	: string
+
+{***** Primitif-Primitif State Mesin Token ******}
+
+procedure Ignore_Blank
+{I.S.: CC Sembarang}
+{F.S.: CC != BLANK atau CC = MARK}
+
+KAMUS LOKAL
+
+ALGORITMA
+	START
+	while (CC = BLANK) do
+		ADV
+
+procedure STARTTOKEN
+{I.S.: CC sembarang}
+{F.S.: CC = Mark}
+
+KAMUS LOKAL
+
+ALGORITMA
+	START
+	Ignore_Blank
+	if (CC = MARK) then
+		EndElement <- true
+	else
+		EndElement <- false
+		SalinToken
+
+
+procedure ADVElement
+{ I.S.: CC adalah karakter pertama kata yang akan diakuisisi }
+{ F.S.: CKata adalah kata terakhir yang sudah diakuisisi,
+        CC adalah karakter pertama dari kata berikutnya,
+        mungkin MARK }
+{ Proses: Akuisisi kata menggunakan procedure SalinElement }
+
+KAMUS LOKAL
+
+ALGORITMA
+	Ignore_Blank
+	if (CC = MARK) then
+		EndElement <- true
+	else
+		SalinElement
+
+
+procedure SalinElement
+{ Mengakuisisi element, menyimpan dalam CElement}
+{ I.S.: CC adalah karakter pertama dari Element}
+{ F.S.: CElement berisi kata yang sudah diakuisisi;
+  CC = BLANK atau CC = MARK;
+  CC adalah karakter sesudah karakter terakhir yang
+  diakuisisi }
+
+KAMUS LOKAL
+	i: integer
+
+ALGORITMA
+	Ignore_Blank
+	if (CC = MARK) then
+		EndElement <- true
+
+function isOperator (Operator: string) -> boolean
+
+KAMUS LOKAL
+
+ALGORITMA
+	-> (Operator = "*") or (Operator = "/") or (Operator = "+")  or (Operator = "-")  or (Operator = "^")  
+
+
+function isToken (Operan1, Operan2, Operator : string) -> boolean
+
+KAMUS LOKAL
+
+ALGORITMA
+	-> isDigit(Operator1) and isDigit(Operator2) and isOperator(Operator)
+
+
+{****** Driver Mesin Token ******}
+Program Ekspresi Matematika
+
+KAMUS LOKAL
+	idxArr, idxTempArr, j, a, b 	: integer
+	Arr, tempArr			: array of string
+
+ALGORITMA
+	STARTTOKEN
+	idxArr <- 0
+	while (not EndElement) do
+		Arr[idxArr] <- CElement
+		idxArr <- idxArr + 1
+		ADVElement
+
+	idxTempArr <-1
+	while (idxArr != 0 or idxTempArr != 0) do
+		idxTempArr <- 0
+		i <- 0
+		while (i <= idxArr) do
+			if (i + 2 <= idxArr) do 
+				if (isToken (Arr[i], Arr[i+1], Arr[i+2])) then
+					tempArr[idxTempArr] <- "(" + Arr[i] + Arr[i+2] + Arr[i+1] + ")"
+					idxTempArr <- idxTempArr + 1 
+					i <- i + 3
+				else
+					tempArr[idxTempArr] <- Arr[i]
+					idxTempArr <- idxTempArr + 1
+					i <- i +1				
+			else
+				tempArr[idxTempArr] <- Arr[i]
+				idxTempArr <- idxTempArr + 1
+				i <- i +1
+
+		a traversal [0..ArrIdx]
+			Arr[a] <- 0
+
+		j <- 0
+		idxArr <- 0
+		while (j <= idxTempArr) do
+			if (j + 2 <= idxTempArr)			
+				if (isToken (tempArr[j], tempArr[j+1], tempArr[j+2])) then
+					Arr[idx] <- "(" + tempArr[j] + tempArr[j+2] + tempArr[j+1] + ")"
+					idxArr <- idxArr + 1 
+					j <- j + 3
+				else
+					Arr[idx] <- tempArr[i]
+					idxArr <- idxArr + 1
+					j <- j +1
+			else
+				Arr[idx] <- tempArr[i]
+				idxArr <- idxArr + 1
+				j <- j +1
+
+		b traversal [0..idxTempArr]
+			tempArrp[b] <- 0
+
+		if (idxArr = 0) then
+			output Arr[0]
+		else if (idxTempArr = 0) then
+			output tempArr[0]
+
+
+
+
+
+
