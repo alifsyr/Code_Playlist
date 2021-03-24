@@ -1,35 +1,44 @@
 /**
- * Main.java
- * Program menerima masukan berupa x y r (x dan y adalah koordinat titik pusat lingkaran, dan r adalah jari-jari lingkaran)
+ * Main.java 
+ * program utama yang menerima perintah untuk melakukan compensate, work, atau nextDay
  * @author 18219036 Zachrandika Alif Syahreza
  */
+
 import java.lang.System;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        int x;
-        int y;
-        float r;
-    
-        // Input x,y,r
-        x = input.nextInt();  
-        y = input.nextInt();
-        r = input.nextFloat();
-
-        // Tutup scanner
-        input.close();
-
-        Point origin = new Point(x,y);
-        Circle circle = new Circle(origin,r);
-
-        float keliling = circle.getCircumference();
-        float luas = circle.getArea();
-
-        // Output
-        System.out.println(String.format("%d %d %f", x, y, r)); 
-        System.out.println(Math.round(keliling)); 
-        System.out.println(Math.round(luas));
+        Scanner scanner = new Scanner(System.in);
+        Employee employee = new Employee();
+        int countperintah = scanner.nextInt();
+        for (int i = 0; i < countperintah; i++){
+            int perintah = scanner.nextInt();
+            if (perintah == 1){
+                int gaji = scanner.nextInt();
+                employee.compensate(gaji);
+                System.out.println("Berhasil membayar pegawai sebesar V$" + gaji);
+            }
+            else if (perintah == 2){
+                try{
+                    employee.work();
+                    System.out.println("Berhasil melakukan tugas");
+                }
+                catch (UnpaidException e){
+                    System.out.println(e.getErrorMessage());
+                }
+                catch (UnderpaidException e){
+                    System.out.println(e.getErrorMessage());
+                }
+                catch (BurnoutException e){
+                    System.out.println(e.getErrorMessage());
+                }
+            }
+            else if (perintah == 3){
+                employee.nextDay();
+                System.out.println("Gamti hari boi!");
+            }
+        }
+        scanner.close();
     }
 }
