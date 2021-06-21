@@ -1,0 +1,74 @@
+tag html ada head ada body
+
+#tag head
+    -judul
+    <title></title>
+
+    -css
+    <style></style>
+
+    -javascript
+    <script></script>
+
+    -metadata
+    berisi metadata website
+    <meta></meta>
+
+    contoh
+    <meta charset="UTF=8">
+    <meta nam="description" content="kuliah pemrograman web">
+    <meta name="keyword" content="HTML,CSS,javascript">
+    <meta name="author" content="aladdin">
+
+#tag body
+    -teks
+    <h1>, <h2>, <h3>, <h4>, <h5> (besar ke kecil)
+    <p> (paragraf)
+
+    -pendukung teks
+    <br> menambah baris baru
+    <hr> menambah garis horizontal
+    <em>
+    <strong>, ...
+
+    -gambar
+    <img>
+
+    -hyperlink
+    <a>
+
+    -list (bullets & numbering)
+    <ul>, <ol>, <li>, <dl>, <dt>, <dd>
+
+    -tabel
+    <tabel>, <thead>, <tbody>, ...
+
+    -form
+    <form>, <input>, <select>, <button> ...
+
+    -script
+    <script>
+
+    -object
+    <object>
+
+    -grouping
+    <div>, <span>
+
+    -komentar
+    <!-- ini komentar. -->
+
+Struktur tag
+    <namatag atribut="nilai>
+    contoh: <body bgcolor="lightblue'>
+    Tag bisa memiliki lebih dari 1 atribut
+
+    atribut global: (www.w3school.com/Tags)
+    1. accesskey
+    2. class
+    3. id
+    4. dir : direction
+    5. lang : language
+    6. style : untuk menyisipkan inline css
+    7. tabindex : menentukan urutan membuat form
+    8. tittle
